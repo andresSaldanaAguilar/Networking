@@ -1,1 +1,20 @@
-{"agents": [{"idAgent": "1", "hostname": "localhost", "version": "2", "port": 161, "comunity": "grupo4cm1"}]}
+{
+    "1": {
+        "comunity": "dggeww",
+        "hostname": "localgost",
+        "port": 161,
+        "version": "2"
+    },
+    "2": {
+        "comunity": "grupo4cm3",
+        "hostname": "localhost",
+        "port": 161,
+        "version": "2"
+    },
+    "holiaiai": {
+        "comunity": "aaf",
+        "hostname": "1",
+        "port": 141,
+        "version": "a1314"
+    }
+}

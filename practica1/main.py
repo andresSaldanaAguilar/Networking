@@ -31,16 +31,15 @@ def menu():
                 print("Ya existe el idAgente.")
 
         if opc == 2:
-            idAgente = raw_input("IdAgente: ")
+            idAgente = input("IdAgente: ")
             if mm.removeAgent(idAgente):
                 print(idAgente + " eliminado.")
             else:
                 print("No se encontro el idAgente.")
 
         if opc == 3:
-            idAgente = raw_input("IdAgente: ")
-            if not mm.consulta(idAgente):
-                print("No se encontro el idAgente.")
+            #idAgente = input("IdAgente: ")
+            mm.readJson()
             
         if opc == 4:
             continue;
