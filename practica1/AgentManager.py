@@ -39,10 +39,9 @@ class AgentManager():
         )
         
         print("host:"+self.data[str(idAgent)]['hostname'])
-        print("host:"+self.data[str(idAgent)]['version'])
+        print("version:"+self.data[str(idAgent)]['version'])
         for result in results: 
         	print(result)
-        	print("\n")
 
     def removeAgent(
 		self, idAgent
