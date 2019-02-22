@@ -1,6 +1,7 @@
 import json
 from pprint import pprint
 import os.path
+from getMIB import *
 
 class AgentManager():
 
@@ -13,13 +14,13 @@ class AgentManager():
                 self.data = json.load(f)  
    
     def addAgent(
-		self, idAgent, hostname, version, port, comunity
+		self, idAgent, hostname, version, port, community
 	):				
         newAgent = {  
             'hostname': hostname,
             'version': version,
             'port': port,
-            'comunity': comunity
+            'community': community
         }
 
         self.data[str(idAgent)] = newAgent
@@ -28,10 +29,15 @@ class AgentManager():
 
         return True
 
-    def getAgent(
+    def getMIBAgent(
 		self, idAgent
 	):
-        return self.data[str(idAgent)]
+        getMIB(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['host'],
+            self.data[str(idAgent)]['version'],
+            '1.3.6.1.2.1.1.1.0'
+        )
 
     def removeAgent(
 		self, idAgent
@@ -48,5 +54,8 @@ class AgentManager():
         with open('agents.json') as f:
             self.data = json.load(f)
             pprint(self.data)
-           
+
+
+
+
     

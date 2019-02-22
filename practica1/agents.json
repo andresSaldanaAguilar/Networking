@@ -1,4 +1,10 @@
 {
+    "1": {
+        "community": "grupo4cm1",
+        "hostname": "localhost",
+        "port": 161,
+        "version": "2"
+    },
     "2": {
         "comunity": "grupo4cm3",
         "hostname": "localhost",

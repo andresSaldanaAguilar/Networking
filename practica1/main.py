@@ -22,10 +22,10 @@ def menu():
             hostname = input("Hostname: ")
             version = input("Version: ")
             port = int(input("Port: "))
-            comunity = input("Comunity: ")
+            community = input("Community: ")
 
             if am.addAgent(
-                agentID, hostname, version, port, comunity
+                agentID, hostname, version, port, community
             ):
                 print(agentID + " registrado.")
             else:
@@ -40,7 +40,7 @@ def menu():
 
         if opc == 3:
             agentID = input("agentID: ")
-            agent = am.getAgent(agentID)
+            agent = am.getMIBAgent(agentID)
             print(agent)
             
         if opc == 4:
