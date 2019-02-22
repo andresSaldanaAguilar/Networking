@@ -39,8 +39,7 @@ class AgentManager():
             '1.3.6.1.2.1.1.1.0'
         )
 
-        for result in results:
-                print(result)
+        print(results)
 
     def removeAgent(
 		self, idAgent

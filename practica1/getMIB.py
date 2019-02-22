@@ -14,7 +14,7 @@ def getMIBagent(community,host,port,oid):
     if errorIndication:
         print(errorIndication)
     elif errorStatus:
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
-    else:
-        return varbinds
+        print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+	else:
+		for varBind in varBinds:
+		    print(' = '.join([x.prettyPrint() for x in varBind]))
