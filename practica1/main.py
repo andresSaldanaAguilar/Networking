@@ -13,8 +13,8 @@ def menu():
         am.readJson()
         print("1. Agregar Agente")
         print("2. Eliminar Agente")
-        print("3. Estado de un agente")
-        print("4. Graficas de un agente")
+        print("3. Estado de un Agente")
+        print("4. Graficas de un Agente")
         print("5. Salir")
         opc = int(input())
         if opc == 1:
