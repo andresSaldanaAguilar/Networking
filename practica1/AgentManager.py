@@ -38,8 +38,8 @@ class AgentManager():
             self.data[str(idAgent)]['port']
         )
         
-		print("host:"+self.data[str(idAgent)]['hostname'])
-		print("host:"+self.data[str(idAgent)]['version'])
+        print("host:"+self.data[str(idAgent)]['hostname'])
+        print("host:"+self.data[str(idAgent)]['version'])
         for result in results: 
         	print(result)
         	print("\n")
