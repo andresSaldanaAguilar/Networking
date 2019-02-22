@@ -32,7 +32,7 @@ class AgentManager():
     def getMIBAgent(
 		self, idAgent
 	):
-        results = getMIBagent(
+        results = getAgentInfo(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['port']
@@ -42,7 +42,6 @@ class AgentManager():
         print("host:"+self.data[str(idAgent)]['version'])
         for result in results: 
         	print(result)
-        	print("\n")
 
     def removeAgent(
 		self, idAgent
