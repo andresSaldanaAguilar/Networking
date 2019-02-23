@@ -2,6 +2,7 @@ import json
 from pprint import pprint
 import os.path
 from getMIB import *
+import datetime
 
 class AgentManager():
 
@@ -32,16 +33,49 @@ class AgentManager():
     def getMIBAgent(
 		self, idAgent
 	):
-        results = getMIBagent(
+        name = getMIBagent(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['port']
+            '1.3.6.1.2.1.1.5.0' #sysname
+        )
+        descr = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.1.0' #sysdescr
+        )
+        ifnumer = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.2.1.0' #ifnumber
+        )
+        uptime = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.3.0' #sysuptime
+        )
+        seconds = int(uptime)/100
+        
+        location = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.6.0' #syslocaton (physical)
+        )
+        contact = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.4.0' #syscontact
         )
         
-        print("host:"+self.data[str(idAgent)]['hostname'])
-        print("version:"+self.data[str(idAgent)]['version'])
-        for result in results: 
-        	print(result)
+        print("--------------- Agent info  -----------------------")
+        print("Host: "+self.data[str(idAgent)]['hostname'])
+        print("Name: "+name)
+        print("Version: "+self.data[str(idAgent)]['version'])
+        print("Description: "+descr)
+        print("Number of interfaces: "+ifnumer)
+        print("Up since: " + str(datetime.timedelta(seconds=seconds)))
+        print("Location: "+location)
+        print("Contact: "+contact)
+        print("---------------------------------------------------")
 
     def removeAgent(
 		self, idAgent
