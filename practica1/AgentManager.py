@@ -32,16 +32,45 @@ class AgentManager():
     def getMIBAgent(
 		self, idAgent
 	):
-        results = getMIBagent(
+        name = getMIBagent(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['port']
+            self.data[str(idAgent)]['1.3.6.1.2.1.1.5.0'] #sysname
+        )
+        descr = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            self.data[str(idAgent)]['1.3.6.1.2.1.1.1.0'] #sysdescr
+        )
+        ifnumer = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            self.data[str(idAgent)]['1.3.6.1.2.1.2.1.0'] #ifnumber
+        )
+        uptime = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            self.data[str(idAgent)]['1.3.6.1.2.1.1.3.0'] #sysuptime
+        )
+        location = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            self.data[str(idAgent)]['1.3.6.1.2.1.1.6.0'] #syslocaton (physical)
+        )
+        contact = getMIBagent(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            self.data[str(idAgent)]['1.3.6.1.2.1.1.4.0'] #syscontact
         )
         
-        print("host:"+self.data[str(idAgent)]['hostname'])
-        print("version:"+self.data[str(idAgent)]['version'])
-        for result in results: 
-        	print(result)
+        print("Host: "+self.data[str(idAgent)]['hostname'])
+        print("Name: "+name)
+        print("Version: "+self.data[str(idAgent)]['version'])
+        print("Description: "+descr)
+        print("Number of interfaces: "+ifnumer)
+        print("Up since: "+uptime)
+        print("Location: "+location)
+        print("Contact: "+contact)
 
     def removeAgent(
 		self, idAgent
