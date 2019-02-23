@@ -19,5 +19,5 @@ def getMIBagent(community,host,oid):
     else:
         for varBind in varBinds:
             varB=(' = '.join([x.prettyPrint() for x in varBind]))
-            resultado= varB.split()[2]
+            resultado= varB.split('=')[1]
     return resultado

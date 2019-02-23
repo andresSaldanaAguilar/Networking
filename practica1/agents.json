@@ -16,5 +16,11 @@
         "hostname": "192.168.0.13",
         "port": 161,
         "version": "2"
+    },
+    "4": {
+        "community": "grupo4cm1",
+        "hostname": "10.100.72.11",
+        "port": 161,
+        "version": "2"
     }
 }
