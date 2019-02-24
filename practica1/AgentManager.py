@@ -96,8 +96,8 @@ class AgentManager():
     def agentMonitoring(
 	    self
 	):
-		for k,v in self.data.items()
-			print(k+"_"+v)
+        for k,v in self.data.items():
+            print(k+"_"+v)
 
 
 
