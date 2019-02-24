@@ -1,7 +1,7 @@
 
 from pysnmp.hlapi import *
 
-def getMIBagent(community,host,oid):
+def request(community,host,oid):
 
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
