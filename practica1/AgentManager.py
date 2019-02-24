@@ -3,6 +3,9 @@ from pprint import pprint
 import os.path
 from getSNMP import *
 import datetime
+from createRDD import *
+from updateRDD import *
+from graphRDD import *
 
 class AgentManager():
 
@@ -97,8 +100,9 @@ class AgentManager():
 	    self
 	):
         for k,v in self.data.items():
-            print(k+"_"+v)
-
+            createRDD(k+v['hostname'])
+            updateRDD(k+v['hostname'],v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3')
+			graphRDD(k+v['hostname'])
 
 
 
