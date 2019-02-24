@@ -3,12 +3,16 @@ from pprint import pprint
 import os.path
 from getSNMP import *
 import datetime
+from createRDD import *
+from updateRDD import *
+from graphRDD import *
 
 class AgentManager():
 
     def __init__(self):
         #this dictionary carries all the existent agents
         self.data = {}
+        self.pool = {}
         #filling the dictionary
         if os.path.exists('agents.json') and os.path.getsize('agents.json') > 0:
             with open('agents.json', 'r') as f:
@@ -92,7 +96,17 @@ class AgentManager():
         with open('agents.json') as f:
             self.data = json.load(f)
             pprint(self.data)
-
+            
+    def agentMonitoring(
+	    self
+	):
+        for k,v in self.data.items():
+            createRDD(k)
+            u = updateRDD(k,v['community'],v['hostname'])
+            g = graphRDD(k)
+            u.start()
+            g.start()
+            
 
 
 

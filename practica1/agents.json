@@ -1,25 +1,13 @@
 {
     "1": {
         "community": "grupo4cm1",
-        "hostname": "localhost",
-        "port": 161,
-        "version": "2"
-    },
-    "2": {
-        "comunity": "grupo4cm3",
-        "hostname": "localhost",
+        "hostname": "192.168.0.13",
         "port": 161,
         "version": "2"
     },
     "3": {
         "community": "grupo4cm1",
         "hostname": "192.168.0.13",
-        "port": 161,
-        "version": "2"
-    },
-    "4": {
-        "community": "grupo4cm1",
-        "hostname": "10.100.72.11",
         "port": 161,
         "version": "2"
     }
