@@ -92,6 +92,12 @@ class AgentManager():
         with open('agents.json') as f:
             self.data = json.load(f)
             pprint(self.data)
+            
+    def agentMonitoring(
+	    self
+	):
+		for item in data:
+			print(data['hostname'])
 
 
 
