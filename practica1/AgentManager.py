@@ -96,8 +96,8 @@ class AgentManager():
     def agentMonitoring(
 	    self
 	):
-        for item in data:
-            print(data['hostname'])
+		for k,v in self.data.items()
+			print(k+"_"+v)
 
 
 
