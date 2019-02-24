@@ -2,6 +2,7 @@ import json
 from pprint import pprint
 import os.path
 from getSNMP import *
+import datetime
 
 class AgentManager():
 
@@ -35,42 +36,46 @@ class AgentManager():
         name = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['1.3.6.1.2.1.1.5.0'] #sysname
+            '1.3.6.1.2.1.1.5.0' #sysname
         )
         descr = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['1.3.6.1.2.1.1.1.0'] #sysdescr
+            '1.3.6.1.2.1.1.1.0' #sysdescr
         )
         ifnumer = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['1.3.6.1.2.1.2.1.0'] #ifnumber
+            '1.3.6.1.2.1.2.1.0' #ifnumber
         )
         uptime = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['1.3.6.1.2.1.1.3.0'] #sysuptime
+            '1.3.6.1.2.1.1.3.0' #sysuptime
         )
+        seconds = int(uptime)/100
+        
         location = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['1.3.6.1.2.1.1.6.0'] #syslocaton (physical)
+            '1.3.6.1.2.1.1.6.0' #syslocaton (physical)
         )
         contact = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['1.3.6.1.2.1.1.4.0'] #syscontact
+            '1.3.6.1.2.1.1.4.0' #syscontact
         )
         
+        print("--------------- Agent info  -----------------------")
         print("Host: "+self.data[str(idAgent)]['hostname'])
         print("Name: "+name)
         print("Version: "+self.data[str(idAgent)]['version'])
         print("Description: "+descr)
         print("Number of interfaces: "+ifnumer)
-        print("Up since: "+uptime)
+        print("Up since: " + str(datetime.timedelta(seconds=seconds)))
         print("Location: "+location)
         print("Contact: "+contact)
+        print("---------------------------------------------------")
 
     def removeAgent(
 		self, idAgent
