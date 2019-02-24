@@ -1,7 +1,7 @@
 import json
 from pprint import pprint
 import os.path
-from getMIB import *
+from getSNMP import *
 
 class AgentManager():
 
@@ -32,32 +32,32 @@ class AgentManager():
     def getMIBAgent(
 		self, idAgent
 	):
-        name = getMIBagent(
+        name = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['1.3.6.1.2.1.1.5.0'] #sysname
         )
-        descr = getMIBagent(
+        descr = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['1.3.6.1.2.1.1.1.0'] #sysdescr
         )
-        ifnumer = getMIBagent(
+        ifnumer = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['1.3.6.1.2.1.2.1.0'] #ifnumber
         )
-        uptime = getMIBagent(
+        uptime = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['1.3.6.1.2.1.1.3.0'] #sysuptime
         )
-        location = getMIBagent(
+        location = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['1.3.6.1.2.1.1.6.0'] #syslocaton (physical)
         )
-        contact = getMIBagent(
+        contact = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
             self.data[str(idAgent)]['1.3.6.1.2.1.1.4.0'] #syscontact
