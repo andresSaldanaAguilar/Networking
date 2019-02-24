@@ -12,6 +12,7 @@ class AgentManager():
     def __init__(self):
         #this dictionary carries all the existent agents
         self.data = {}
+        self.pool = {}
         #filling the dictionary
         if os.path.exists('agents.json') and os.path.getsize('agents.json') > 0:
             with open('agents.json', 'r') as f:
@@ -100,9 +101,12 @@ class AgentManager():
 	    self
 	):
         for k,v in self.data.items():
-            createRDD(k+v['hostname'])
-            updateRDD(k+v['hostname'],v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3')
-            graphRDD(k+v['hostname'])
+            createRDD(k)
+            u = updateRDD(k,v['community'],v['hostname'])
+            g = graphRDD(k)
+            u.start()
+            g.start()
+            
 
 
 
