@@ -102,8 +102,8 @@ class AgentManager():
 	):
         for k,v in self.data.items():
             createRDD(k)
-            u = updateRDD(k,v['community'],v['hostname'])
-            g = graphRDD(k)
+            u = updateRDD(k,v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3')
+            g = graphRDD(k,'inoctects','outoctecs','Bytes/s')
             u.start()
             g.start()
             
