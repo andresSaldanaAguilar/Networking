@@ -1,13 +1,18 @@
 import json
 from pprint import pprint
 import os.path
-from getMIB import *
+from getSNMP import *
+import datetime
+from createRDD import *
+from updateRDD import *
+from graphRDD import *
 
 class AgentManager():
 
     def __init__(self):
         #this dictionary carries all the existent agents
         self.data = {}
+        self.pool = {}
         #filling the dictionary
         if os.path.exists('agents.json') and os.path.getsize('agents.json') > 0:
             with open('agents.json', 'r') as f:
@@ -32,16 +37,49 @@ class AgentManager():
     def getMIBAgent(
 		self, idAgent
 	):
-        results = getAgentInfo(
+        name = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
-            self.data[str(idAgent)]['port']
+            '1.3.6.1.2.1.1.5.0' #sysname
+        )
+        descr = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.1.0' #sysdescr
+        )
+        ifnumer = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.2.1.0' #ifnumber
+        )
+        uptime = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.3.0' #sysuptime
+        )
+        seconds = int(uptime)/100
+        
+        location = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.6.0' #syslocaton (physical)
+        )
+        contact = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.4.0' #syscontact
         )
         
-        print("host:"+self.data[str(idAgent)]['hostname'])
-        print("version:"+self.data[str(idAgent)]['version'])
-        for result in results: 
-        	print(result)
+        print("--------------- Agent info  -----------------------")
+        print("Host: "+self.data[str(idAgent)]['hostname'])
+        print("Name: "+name)
+        print("Version: "+self.data[str(idAgent)]['version'])
+        print("Description: "+descr)
+        print("Number of interfaces: "+ifnumer)
+        print("Up since: " + str(datetime.timedelta(seconds=seconds)))
+        print("Location: "+location)
+        print("Contact: "+contact)
+        print("---------------------------------------------------")
 
     def removeAgent(
 		self, idAgent
@@ -58,7 +96,17 @@ class AgentManager():
         with open('agents.json') as f:
             self.data = json.load(f)
             pprint(self.data)
-
+            
+    def agentMonitoring(
+	    self
+	):
+        for k,v in self.data.items():
+            createRDD(k)
+            u = updateRDD(k,v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3')
+            g = graphRDD(k,'inoctects','outoctecs','Bytes/s')
+            u.start()
+            g.start()
+            
 
 
 

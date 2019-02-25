@@ -44,7 +44,7 @@ def menu():
             print(agent)
             
         if opc == 4:
-            continue
+            am.agentMonitoring()
 
         if opc == 5:
             print("Cerrando monitores.")
