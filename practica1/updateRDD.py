@@ -11,8 +11,8 @@ class updateRDD(threading.Thread):
 		self.filename = filename
 		self.community = community
 		self.host = host
-        self.oid1 = oid1
-        self.oid2 = oid2
+		self.oid1 = oid1
+		self.oid2 = oid2
 	
 	def run(self):
 		while 1:
