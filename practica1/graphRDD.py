@@ -15,14 +15,22 @@ class graphRDD(threading.Thread):
 			
 	def run(self):
 		actualTime = calendar.timegm(time.gmtime())
-		print(self.filename)
 		while 1:
-		    ret = rrdtool.graph( self.filename+".png",
-		                    "--start",str(actualTime),
-		                    "--vertical-label="+unit,
-		                    "DEF:in="+self.filename+".rrd:in:AVERAGE",
-		                    "DEF:out="+self.filename+".rrd:out:AVERAGE",
-		                    "AREA:in#00FF00:"+label1,
-		                    "LINE1:out#0000FF:"+label2)
+		
+			if label2 is not None:
+				ret = rrdtool.graph( self.filename+".png",
+				                "--start",str(actualTime),
+				                "--vertical-label="+self.unit,
+				                "DEF:in="+self.filename+".rrd:in:AVERAGE",
+				                "DEF:out="+self.filename+".rrd:out:AVERAGE",
+				                "LINE1:in#00FF00:"+self.label1,
+				                "LINE1:out#0000FF:"+self.label2)
+				               
+			else:
+				ret = rrdtool.graph( self.filename+".png",
+				                "--start",str(actualTime),
+				                "--vertical-label="+self.unit,
+				                "DEF:in="+self.filename+".rrd:in:AVERAGE",
+				                "LINE1:in#0000FF:"+self.label1)
 
 		    time.sleep(5)

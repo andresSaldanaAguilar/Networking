@@ -101,11 +101,17 @@ class AgentManager():
 	    self
 	):
         for k,v in self.data.items():
-            createRDD(k)
-            u = updateRDD(k,v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3')
-            g = graphRDD(k,'inoctects','outoctecs','Bytes/s')
+            createRDD("interface"+k,2)
+            u = updateRDD("interface"+k,v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3')
+            g = graphRDD("interface"+k,'inoctects','outoctecs','Bytes/s')
             u.start()
             g.start()
+            
+            createRDD("conexiones_tcp"+k,1)
+            u2 = updateRDD("conexiones_tcp"+k,v['community'],v['hostname'],'1.3.6.1.2.1.6.9.0',None)
+            g2 = graphRDD("conexiones_tcp"+k,'Conexiones TCP establecidas',None,'no. conexiones')
+            u2.start()
+            g2.start()
             
 
 
