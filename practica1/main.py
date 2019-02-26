@@ -8,6 +8,7 @@ def main():
 	menu()
 
 def menu():
+	am.agentMonitoring()
     while 1:
         #mostrar por cada agente: status (up o down), interfaces y su estatus 
         am.readJson()
@@ -44,9 +45,6 @@ def menu():
             print(agent)
             
         if opc == 4:
-            am.agentMonitoring()
-
-        if opc == 5:
             print("Cerrando monitores.")
             break
 

@@ -19,13 +19,13 @@ class updateRDD(threading.Thread):
 			total_input_traffic = int(
 				requestRT(self.community,self.host,self.oid1))
 				
-			if oid2 is not None:
+			if self.oid2 is not None:
 				total_output_traffic = int(
 					requestRT(self.community,self.host,self.oid2))
 				valor = "N:" + str(total_input_traffic) + ':' + str(total_output_traffic)
 			
 			else:
-				svalor = "N:" + str(total_input_traffic)
+				valor = "N:" + str(total_input_traffic)
 				
 			rrdtool.update(self.filename+'.rrd', valor)
 			rrdtool.dump(self.filename+'.rrd',self.filename+'.xml')

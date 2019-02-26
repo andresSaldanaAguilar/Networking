@@ -17,7 +17,7 @@ class graphRDD(threading.Thread):
 		actualTime = calendar.timegm(time.gmtime())
 		while 1:
 		
-			if label2 is not None:
+			if self.label2 is not None:
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
 				                "--vertical-label="+self.unit,
