@@ -4,11 +4,11 @@ am = AgentManager()
 
         
 def main():
-	print("SNMP Monitor")
-	menu()
+    print("SNMP Monitor")
+    menu()
 
 def menu():
-	am.agentMonitoring()
+    am.agentMonitoring()
     while 1:
         #mostrar por cada agente: status (up o down), interfaces y su estatus 
         am.readJson()
