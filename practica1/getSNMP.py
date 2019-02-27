@@ -1,19 +1,20 @@
 
 from pysnmp.hlapi import *
 
-def request(community,host,oid):
+def request(community,host,oid,port):
 
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
             CommunityData(community),
-            UdpTransportTarget((host, 161)),
+            UdpTransportTarget((host, port)),
             ContextData(),
             ObjectType(ObjectIdentity(oid)))
     )
-    #	1.3.6.1.2.1.4.20.1.3 know ip 
 
     if errorIndication:
-        print(errorIndication)
+        #print(errorIndication)
+        #aqui se maneja la no respuesta del agente
+        resultado = ""
     elif errorStatus:
         print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
     else:
@@ -22,21 +23,23 @@ def request(community,host,oid):
             resultado= varB.split('=')[1]
     return resultado
     
-def requestRT(community,host,oid):
+def requestRT(community,host,oid,port):
 
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
             CommunityData(community),
-            UdpTransportTarget((host, 161)),
+            UdpTransportTarget((host, port)),
             ContextData(),
             ObjectType(ObjectIdentity(oid)))
     )
-    #	1.3.6.1.2.1.4.20.1.3 know ip 
 
     if errorIndication:
-        print(errorIndication)
+        #print(errorIndication)
+        #aqui se maneja la no respuesta del agente
+        resultado = ""
     elif errorStatus:
         print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+
     else:
         for varBind in varBinds:
             varB=(' = '.join([x.prettyPrint() for x in varBind]))
