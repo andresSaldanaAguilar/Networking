@@ -41,7 +41,9 @@ class updateRDD(threading.Thread):
 					#no hay respuesta
 					#print("sin respuesta del agente: "+self.host)
 				time.sleep(5)
+				
+		
 
-		if ret:
-			print (rrdtool.error())
-			time.sleep(10)
+		#if ret:
+			#print (rrdtool.error())
+			#time.sleep(10)
