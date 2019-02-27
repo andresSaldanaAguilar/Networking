@@ -17,10 +17,10 @@ class AgentManager():
         if os.path.exists('agents.json') and os.path.getsize('agents.json') > 0:
             with open('agents.json', 'r') as f:
                 self.data = json.load(f)  
-   
+
     def addAgent(
-		self, idAgent, hostname, version, port, community
-	):				
+        self, idAgent, hostname, version, port, community
+    ):				
         newAgent = {  
             'hostname': hostname,
             'version': version,
@@ -35,8 +35,8 @@ class AgentManager():
         return True
 
     def getMIBAgent(
-		self, idAgent
-	):
+        self, idAgent
+    ):
         name = request(
             self.data[str(idAgent)]['community'],
             self.data[str(idAgent)]['hostname'],
@@ -62,7 +62,7 @@ class AgentManager():
             self.data[str(idAgent)]['port']
         )
         if(uptime != ""):
-        	seconds = int(uptime)/100
+            seconds = int(uptime)/100
         
         location = request(
             self.data[str(idAgent)]['community'],
@@ -78,22 +78,22 @@ class AgentManager():
         )
         
         if(uptime != ""):
-		    print("--------------- Agent info  -----------------------")
-		    print("Host: "+self.data[str(idAgent)]['hostname'])
-		    print("Name: "+name)
-		    print("Version: "+self.data[str(idAgent)]['version'])
-		    print("Description: "+descr)
-		    print("Number of interfaces: "+ifnumer)
-		    print("Up since: " + str(datetime.timedelta(seconds=seconds)))
-		    print("Location: "+location)
-		    print("Contact: "+contact)
-		    print("---------------------------------------------------")
-		else:
-			print("--------------- No Agent info  -----------------------")
+            print("--------------- Agent info  -----------------------")
+            print("Host: "+self.data[str(idAgent)]['hostname'])
+            print("Name: "+name)
+            print("Version: "+self.data[str(idAgent)]['version'])
+            print("Description: "+descr)
+            print("Number of interfaces: "+ifnumer)
+            print("Up since: " + str(datetime.timedelta(seconds=seconds)))
+            print("Location: "+location)
+            print("Contact: "+contact)
+            print("---------------------------------------------------")
+        else:
+            print("--------------- No Agent info  -----------------------")
 
     def removeAgent(
-		self, idAgent
-	):
+        self, idAgent
+    ):
         del self.data[str(idAgent)]
         with open('agents.json', 'w') as f:
             json.dump(self.data, f,sort_keys=True, indent=4)
@@ -101,17 +101,17 @@ class AgentManager():
         return True
 
     def readJson(
-	    self
-	):
+        self
+    ):
         with open('agents.json') as f:
             self.data = json.load(f)
             pprint(self.data)
             
     def agentMonitoring(
-	    self
-	):
+        self
+    ):
         for k,v in self.data.items():
-        	#trafico interfaz
+            #trafico interfaz
             createRDD("interface"+k,2)
             u = updateRDD("interface"+k,v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3',v['port'])
             g = graphRDD("interface"+k,'inoctects','outoctecs','Bytes/s')
