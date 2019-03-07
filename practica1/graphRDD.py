@@ -23,8 +23,10 @@ class graphRDD(threading.Thread):
 				                "--vertical-label="+self.unit,
 				                "DEF:in="+self.filename+".rrd:in:AVERAGE",
 				                "DEF:out="+self.filename+".rrd:out:AVERAGE",
+				                "CDEF:inbits=in,8,*",
 				                "LINE1:in#00FF00:"+self.label1,
-				                "LINE1:out#0000FF:"+self.label2)
+				                "LINE1:out#0000FF:"+self.label2,
+				                "LINE1:inbits#FF0000:multiplied by 8")
 				               
 			else:
 				ret = rrdtool.graph( self.filename+".png",
