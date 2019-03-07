@@ -111,6 +111,14 @@ class AgentManager():
         self
     ):
         for k,v in self.data.items():
+
+			try:  
+				os.mkdir(path)
+			except OSError:  
+				print ("Creation of the directory %s failed" % path)
+			else:  
+				print ("Successfully created the directory %s " % path)
+
             #trafico interfaz
             createRDD("interface"+k,2)
             u = updateRDD("interface"+k,v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3',v['port'])
