@@ -46,7 +46,9 @@ def requestRT(community,host,oid,port):
         for varBind in varBinds:
             varB=(' = '.join([x.prettyPrint() for x in varBind]))
             resultado= varB.split()[2]
-    #print("resultado de "+oid+" : "+resultado)
+			if resultado == "No":
+				resultado = ""
+				
     return resultado
     
 def requestWalk(community,host,oid,port):

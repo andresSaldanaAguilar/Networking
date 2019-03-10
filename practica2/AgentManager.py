@@ -177,7 +177,7 @@ class AgentManager():
                     threads[-2].start()   
                     i=i+1
                 
-        #Almacenamiento ocupado en c://
+        	#Almacenamiento ocupado en c://
             createRDD(k+"/storage",1,"GAUGE")
             u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',None,v['port'])
             g6 = graphRDD(k+"/storage",'Total',None,'','Almacenamiento usado por unidad c')
