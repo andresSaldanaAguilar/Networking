@@ -4,11 +4,5 @@
         "hostname": "192.168.0.8",
         "port": 161,
         "version": "2"
-    },
-    "2": {
-        "community": "com",
-        "hostname": "192.168.0.4",
-        "port": 161,
-        "version": "2"
     }
 }

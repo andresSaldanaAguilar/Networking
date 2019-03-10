@@ -156,13 +156,21 @@ class AgentManager():
             u5.start()
             g5.start()
             
-            requestWalk(
-                self.data[str(idAgent)]['community'],
-                self.data[str(idAgent)]['hostname'],
+            cores = requestWalk(
+                v['community'],
+                v['hostname'],
                 '1.3.6.1.2.1.25.3.3.1.2', 
-                self.data[str(idAgent)]['port']
+                v['port']
             )      
-            
+         
+            for core in cores:
+            	i = 1
+    			createRDD(k+"/core"+i,1,"GAUGE")
+		        t = updateRDD(k+"/core"+i,v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port'])
+		        t = graphRDD(k+"/core"+i,' ',None,'Porcentaje','Rendimiento del Nucleo '+i)
+		        t.start()
+		        t.start()  
+		        i++      	
     
             
 

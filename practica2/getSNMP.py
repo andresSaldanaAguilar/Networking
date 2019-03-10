@@ -58,8 +58,8 @@ def requestWalk(community,host,oid,port):
             errorIndex,
             varBinds
     ) in nextCmd(SnmpEngine(), 
-            CommunityData(comunidad),
-            UdpTransportTarget((host, puerto)),
+            CommunityData(community),
+            UdpTransportTarget((host, port)),
             ContextData(),                                                           
             ObjectType(ObjectIdentity(oid)),
             lexicographicMode=False
@@ -70,6 +70,6 @@ def requestWalk(community,host,oid,port):
                 print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
             else:
                 for oid, value in varBinds:
-                    objects.append((oid.prettyPrint(), value.prettyPrint()))
-                print(objects)
+                    objects.append(oid.prettyPrint()[-1:])
+                #print(objects)
     return objects
