@@ -167,17 +167,17 @@ class AgentManager():
             
             if cores:
             
-		        threads = []
-		        i = 1
-		        for core in cores:
-		            createRDD(k+"/core"+str(i),1,"GAUGE")
-		            threads.append(updateRDD(k+"/core"+str(i),v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
-		            threads.append(graphRDD(k+"/core"+str(i),' ',None,'Porcentaje','Rendimiento del Nucleo '+str(i)))
-		            threads[-1].start()
-		            threads[-2].start()   
-		            i=i+1
+                threads = []
+                i = 1
+                for core in cores:
+                    createRDD(k+"/core"+str(i),1,"GAUGE")
+                    threads.append(updateRDD(k+"/core"+str(i),v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
+                    threads.append(graphRDD(k+"/core"+str(i),' ',None,'Porcentaje','Rendimiento del Nucleo '+str(i)))
+                    threads[-1].start()
+                    threads[-2].start()   
+                    i=i+1
                 
-           #Almacenamiento ocupado en c://
+        #Almacenamiento ocupado en c://
             createRDD(k+"/storage",1,"GAUGE")
             u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',None,v['port'])
             g6 = graphRDD(k+"/storage",'Total',None,'','Almacenamiento usado por unidad c')
@@ -185,7 +185,7 @@ class AgentManager():
             g6.start()                           
                 
             
-           
+        
             
 
 
