@@ -46,9 +46,9 @@ def requestRT(community,host,oid,port):
         for varBind in varBinds:
             varB=(' = '.join([x.prettyPrint() for x in varBind]))
             resultado= varB.split()[2]
-			if resultado == "No":
-				resultado = ""
-				
+            if resultado == "No":
+                resultado = ""
+                
     return resultado
     
 def requestWalk(community,host,oid,port):
@@ -67,7 +67,7 @@ def requestWalk(community,host,oid,port):
             lexicographicMode=False
     ):
             if errorIndication:
-                resultado = ""
+                 resultado = ""
             elif errorStatus:
                 print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
             else:
