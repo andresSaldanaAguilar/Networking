@@ -163,8 +163,8 @@ class AgentManager():
                 v['port']
             )      
             print(cores)
-        	threads = []
-        	
+            threads = []
+            
             for core in cores:
                 i = 1
                 createRDD(k+"/core"+str(i),1,"GAUGE")
