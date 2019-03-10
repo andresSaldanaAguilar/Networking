@@ -50,26 +50,26 @@ def requestRT(community,host,oid,port):
     return resultado
     
 def requestWalk(community,host,oid,port):
-	
-	objects = []
+    
+    objects = []
 
     for(errorIndication,
-    		errorStatus,
-    		errorIndex,
-    		varBinds
-  	) in nextCmd(SnmpEngine(), 
-    		CommunityData(comunidad),
-    		UdpTransportTarget((host, puerto)),
-    		ContextData(),                                                           
-    		ObjectType(ObjectIdentity(oid)),
-    		lexicographicMode=False
-  	):
-    		if errorIndication:
-      			print(errorIndication)
-    		elif errorStatus:
-      			print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
-    		else:
-      			for oid, value in varBinds:
-        			objects.append((oid.prettyPrint(), value.prettyPrint()))
-        		print(objects)
-	return objects
+            errorStatus,
+            errorIndex,
+            varBinds
+    ) in nextCmd(SnmpEngine(), 
+            CommunityData(comunidad),
+            UdpTransportTarget((host, puerto)),
+            ContextData(),                                                           
+            ObjectType(ObjectIdentity(oid)),
+            lexicographicMode=False
+    ):
+            if errorIndication:
+                print(errorIndication)
+            elif errorStatus:
+                print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+            else:
+                for oid, value in varBinds:
+                    objects.append((oid.prettyPrint(), value.prettyPrint()))
+                print(objects)
+    return objects

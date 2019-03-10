@@ -119,8 +119,8 @@ class AgentManager():
             else:  
                 print ("Successfully created the directory %s " % k)
 
-			#counter te guarda en el rrd la diferencia entre el valor pasado y el actual, gauge el valor crudo
-			
+            #counter te guarda en el rrd la diferencia entre el valor pasado y el actual, gauge el valor crudo
+            
             #trafico interfaz
             createRDD(k+"/interface",2,"GAUGE")
             u = updateRDD(k+"/interface",v['community'],v['hostname'],'1.3.6.1.2.1.2.2.1.10.3','1.3.6.1.2.1.2.2.1.16.3',v['port'])
@@ -156,14 +156,14 @@ class AgentManager():
             u5.start()
             g5.start()
             
-      		requestWalk(
-      			self.data[str(idAgent)]['community'],
-		        self.data[str(idAgent)]['hostname'],
-		        '1.3.6.1.2.1.25.3.3.1.2', 
-		        self.data[str(idAgent)]['port']
-      		)      
+            requestWalk(
+                self.data[str(idAgent)]['community'],
+                self.data[str(idAgent)]['hostname'],
+                '1.3.6.1.2.1.25.3.3.1.2', 
+                self.data[str(idAgent)]['port']
+            )      
             
-      
+    
             
 
 
