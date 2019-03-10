@@ -65,7 +65,7 @@ def requestWalk(community,host,oid,port):
             lexicographicMode=False
     ):
             if errorIndication:
-                print(errorIndication)
+                resultado = ""
             elif errorStatus:
                 print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
             else:

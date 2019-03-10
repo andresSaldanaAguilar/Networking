@@ -4,5 +4,11 @@
         "hostname": "192.168.0.8",
         "port": 161,
         "version": "2"
+    },
+    "2": {
+        "community": "grupo4cm1",
+        "hostname": "localhost",
+        "port": 161,
+        "version": "2"
     }
 }
