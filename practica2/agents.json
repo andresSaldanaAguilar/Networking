@@ -10,5 +10,11 @@
         "hostname": "localhost",
         "port": 161,
         "version": "2"
+    },
+    "3": {
+        "community": "com",
+        "hostname": "192.168.0.5",
+        "port": 161,
+        "version": "2"
     }
 }

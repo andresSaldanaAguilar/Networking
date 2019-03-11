@@ -36,7 +36,7 @@ class updateRDD(threading.Thread):
 				#checando si hay respuesta
 				if (total_input_traffic != ""):
 					valor = "N:" + str(total_input_traffic)
-					print("valor de oid: "+valor)
+					#print("valor de oid: "+valor)
 					rrdtool.update(self.filename+'.rrd', valor)
 					rrdtool.dump(self.filename+'.rrd',self.filename+'.xml')
 				#else:

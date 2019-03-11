@@ -72,6 +72,6 @@ def requestWalk(community,host,oid,port):
                 print('%s at %s' % (errorStatus.prettyPrint(),errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
             else:
                 for oid, value in varBinds:
-                    objects.append(oid.prettyPrint()[-1:])
+                    objects.append(oid.prettyPrint())
                 #print(objects)
     return objects
