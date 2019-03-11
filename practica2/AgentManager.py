@@ -186,7 +186,7 @@ class AgentManager():
             g6.start()
             
             #RAM en uso
-            if(v['os'] == "w"):
+            if(v['OS'] == "w"):
                 createRDD(k+"/ram",1,"GAUGE")
                 #u7 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.4.1.2021.4.5.0',None,v['port'])
                 #g7 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
