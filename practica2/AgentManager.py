@@ -178,26 +178,36 @@ class AgentManager():
                     threads[-2].start()   
                     i=i+1
                 
-            #Almacenamiento ocupado en c://
-            createRDD(k+"/storage",1,"GAUGE")
-            u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.6.1',None,v['port'])
-            g6 = graphRDD(k+"/storage",'Total',None,'','Almacenamiento usado por unidad c')
-            u6.start()
-            g6.start()
+            #Almacenamiento ocupado en c://           
+            if(v['OS'] == "w"):
+                createRDD(k+"/storage",2,"GAUGE")
+                u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.6.1',v['port'])
+                g6 = graphRDD(k+"/storage",'Total','multiply','','Almacenamiento')
+                u6.start()
+                g6.start()	 
+            else:
+                createRDD(k+"/storage",2,"GAUGE")
+                u7 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.36','1.3.6.1.2.1.25.2.3.1.6.36',v['port'])
+                #special tag
+                g7 = graphRDD(k+"/storage",'Total','multiply','','Almacenamiento')
+                u7.start()
+                g7.start()	  
             
             #RAM en uso
+           
             if(v['OS'] == "w"):
-                createRDD(k+"/ram",1,"GAUGE")
-                u7 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.5.2',None,v['port'])
-                g7 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
-                u7.start()
-                g7.start()	 
-            else:
-                createRDD(k+"/ram",1,"GAUGE")
-                u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.6.36',None,v['port'])
-                g8 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
+                createRDD(k+"/ram",2,"GAUGE")
+                u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.3','1.3.6.1.2.1.25.2.3.1.6.3',v['port'])
+                g8 = graphRDD(k+"/ram",'Total','multiply','','RAM en uso')
                 u8.start()
-                g8.start()	            
+                g8.start()	 
+            else:
+                createRDD(k+"/ram",2,"GAUGE")
+                u9 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.6.1',v['port'])
+                #special tag
+                g9 = graphRDD(k+"/ram",'Total','multiply','','RAM en uso')
+                u9.start()
+                g9.start()	            
                                     
                 
             

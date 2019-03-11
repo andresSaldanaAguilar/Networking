@@ -28,7 +28,18 @@ class graphRDD(threading.Thread):
 				                "LINE1:in#00FF00:"+self.label1,
 				                "LINE1:out#0000FF:"+self.label2
 				                )
-				               
+				                
+			if self.label2 == "multiply":
+				ret = rrdtool.graph( self.filename+".png",
+				                "--start",str(actualTime),
+				                "--title="+self.title,
+				                "--vertical-label="+self.unit,
+				                "DEF:in="+self.filename+".rrd:in:AVERAGE",
+				                "DEF:out="+self.filename+".rrd:out:AVERAGE",
+				                "CDEF:mul=in,out,*",
+				                "LINE1:mul#00FF00:"+self.label1
+				                )
+				                				               
 			else:
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
