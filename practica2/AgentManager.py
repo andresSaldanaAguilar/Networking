@@ -180,7 +180,7 @@ class AgentManager():
                 
             #Almacenamiento ocupado en c://
             createRDD(k+"/storage",1,"GAUGE")
-            u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',None,v['port'])
+            u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.6.1',None,v['port'])
             g6 = graphRDD(k+"/storage",'Total',None,'','Almacenamiento usado por unidad c')
             u6.start()
             g6.start()
@@ -188,20 +188,20 @@ class AgentManager():
             #RAM en uso
             if(v['OS'] == "w"):
                 createRDD(k+"/ram",1,"GAUGE")
-                #u7 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.4.1.2021.4.5.0',None,v['port'])
-                #g7 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
-                #u7.start()
-                #g7.start()	 
+                u7 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.5.2',None,v['port'])
+                g7 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
+                u7.start()
+                g7.start()	 
             else:
                 createRDD(k+"/ram",1,"GAUGE")
-                u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.4.1.2021.4.5.0',None,v['port'])
+                u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.6.36',None,v['port'])
                 g8 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
                 u8.start()
                 g8.start()	            
                                     
                 
             
-        
+        	#1.3.6.1.4.1.2021.4.5.0
             
 
 
