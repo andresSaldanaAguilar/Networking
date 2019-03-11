@@ -23,9 +23,10 @@ def menu():
             version = input("Version: ")
             port = int(input("Port: "))
             community = input("Community: ")
+            os = input("OS (w/l): ")
 
             if am.addAgent(
-                agentID, hostname, version, port, community
+                agentID, hostname, version, port, community, os
             ):
                 print(agentID + " registrado.")
             else:

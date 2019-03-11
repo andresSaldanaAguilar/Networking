@@ -19,13 +19,14 @@ class AgentManager():
                 self.data = json.load(f)  
 
     def addAgent(
-        self, idAgent, hostname, version, port, community
+        self, idAgent, hostname, version, port, community, os
     ):				
         newAgent = {  
             'hostname': hostname,
             'version': version,
             'port': port,
-            'community': community
+            'community': community,
+            'OS': os
         }
 
         self.data[str(idAgent)] = newAgent
@@ -163,18 +164,13 @@ class AgentManager():
                 v['hostname'],
                 '1.3.6.1.2.1.25.3.3.1.2', 
                 v['port']
-            )        
-            
-            
+            )           
             
             if cores:
-            
                 threads = []
                 i = 1
-                for core in cores:
-                
-                    core = core[(core.find('.') + 1):]
-                    print(cores) 
+                for core in cores: 
+                    core = core[(core.rfind('.') + 1):] 
                     createRDD(k+"/core"+str(i),1,"GAUGE")
                     threads.append(updateRDD(k+"/core"+str(i),v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
                     threads.append(graphRDD(k+"/core"+str(i),' ',None,'Porcentaje','Rendimiento del Nucleo '+str(i)))
@@ -187,7 +183,22 @@ class AgentManager():
             u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',None,v['port'])
             g6 = graphRDD(k+"/storage",'Total',None,'','Almacenamiento usado por unidad c')
             u6.start()
-            g6.start()                           
+            g6.start()
+            
+            #RAM en uso
+            if(v['os'] == "w"):
+	            #createRDD(k+"/ram",1,"GAUGE")
+		        #u7 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.4.1.2021.4.5.0',None,v['port'])
+		        #g7 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
+		        #u7.start()
+		        #g7.start()	 
+            else:
+	            createRDD(k+"/ram",1,"GAUGE")
+		        u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.4.1.2021.4.5.0',None,v['port'])
+		        g8 = graphRDD(k+"/ram",'Total',None,'','RAM en uso')
+		        u8.start()
+		        g8.start()	            
+                                       
                 
             
         
