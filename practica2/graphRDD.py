@@ -29,7 +29,7 @@ class graphRDD(threading.Thread):
 				                "LINE1:out#0000FF:"+self.label2
 				                )
 				                
-			if self.label2 == "On use":
+			elif self.label2 == "On use":
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
 				                "--title="+self.title,
@@ -47,6 +47,7 @@ class graphRDD(threading.Thread):
 			else:
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
+				                "--title="+self.title,
 				                "--vertical-label="+self.unit,
 				                "DEF:in="+self.filename+".rrd:in:AVERAGE",
 				                "LINE1:in#0000FF:"+self.label1)
