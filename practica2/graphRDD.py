@@ -18,7 +18,7 @@ class graphRDD(threading.Thread):
 		actualTime = calendar.timegm(time.gmtime())
 		while 1:
 		
-			if self.label2 is not None:
+			if self.label2 is not None and self.label2 != "On use":
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
 				                "--title="+self.title,
@@ -29,15 +29,19 @@ class graphRDD(threading.Thread):
 				                "LINE1:out#0000FF:"+self.label2
 				                )
 				                
-			if self.label2 == "multiply":
+			if self.label2 == "On use":
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
 				                "--title="+self.title,
 				                "--vertical-label="+self.unit,
-				                "DEF:in="+self.filename+".rrd:in:AVERAGE",
-				                "DEF:out="+self.filename+".rrd:out:AVERAGE",
-				                "CDEF:mul=in,out,*",
-				                "LINE1:mul#00FF00:"+self.label1
+				                "DEF:tin="+self.filename+".rrd:tin:AVERAGE",
+				                "DEF:tout="+self.filename+".rrd:tout:AVERAGE",
+				                "DEF:pin="+self.filename+".rrd:pin:AVERAGE",
+				                "DEF:pout="+self.filename+".rrd:pout:AVERAGE",
+				                "CDEF:tmul=tin,tout,*",
+				                "CDEF:pmul=pin,pout,*",
+				                "LINE1:tmul#0000FF:"+self.label1,
+				                "LINE1:pmul#FF0000:"+self.label2
 				                )
 				                				               
 			else:
