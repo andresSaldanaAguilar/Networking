@@ -2,10 +2,11 @@ import sys
 import rrdtool
 import calendar
 import time, threading
+from umbrales import *
 
 class trendGraph(threading.Thread):
     
-    def __init__(self,filename,title,umbral = 30):
+    def __init__(self,filename,title,umbral1 = 70):
         super(trendGraph,self).__init__()
         self.filename = filename
         self.title = title
@@ -14,11 +15,11 @@ class trendGraph(threading.Thread):
         self.lastTime = calendar.timegm(time.gmtime())
         #self.lastTime = self.lastLecture
         self.initTime = self.lastTime - 900 #se resta el tiempo en segundos
-        self.umbral = umbral
+        self.umbral1 = umbral1
 
     def run(self):
         while 1:
-            ret = rrdtool.graph(self.filename+".png",
+            ret = rrdtool.graphv(self.filename+".png",
                      "--start",str(self.initTime),
                      "--end",str(self.lastTime+900),
                      "--vertical-label=Carga CPU",
@@ -40,6 +41,7 @@ class trendGraph(threading.Thread):
                      "VDEF:CPUmax=carga,MAXIMUM",
                      "VDEF:cargaSTDEV=carga,STDEV",
                      "VDEF:cargaLAST=carga,LAST",
+                     
 
                     #grafica de los datos del CPU
                     "COMMENT:Now          Min             Avg             Max",
@@ -49,32 +51,40 @@ class trendGraph(threading.Thread):
                      "GPRINT:CPUmax:%13.0lf%s",
                      "GPRINT:cargaSTDEV:%6.2lf %SSTDEV",
                      "GPRINT:cargaLAST:%6.2lf %SLAST",
+                    "PRINT:CPUmax:%6.2lf %S",
 
                     #método de mínimos cuadrados
                      "VDEF:m=carga,LSLSLOPE",
                      "VDEF:b=carga,LSLINT",
                      'CDEF:tendencia=carga,POP,m,COUNT,*,b,+',
                      "LINE2:tendencia#FFBB00", 
-                     
-
 
                      #establecer el umbral
-                    "CDEF:umbral25=carga,"+str(self.umbral)+",LT,0,carga,IF",
+                    "CDEF:umbral25=carga,"+str(self.umbral1)+",LT,0,carga,IF",
                     "AREA:carga#00FF00:Carga del CPU",
-                     "AREA:umbral25#FF9F00:Tráfico de carga mayor que "+str(self.umbral)+"",
-                     "HRULE:"+str(self.umbral)+"#FF0000:Umbral 1 - "+str(self.umbral)+"%",
+                     "AREA:umbral25#FF9F00:Tráfico de carga mayor que "+str(self.umbral1)+"",
+                     "HRULE:"+str(self.umbral1)+"#FF0000:Umbral 1 - "+str(self.umbral1)+"%",
+                     
                      
 
                      #detectar punto de corte
-                    'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral)+',+,m,/,b,+,100,/,3600,*,'+str(self.initTime)+',+',
+                    'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,3600,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
                     "COMMENT: Punto",
                     "GPRINT:pintersect:%8.0lf",
+                    "PRINT:pintersect:%6.2lf %S",
 
                      #detectar cuando se sale del umbral
         )
             
+            lastValue = ret['print[0]']
+            fechaPredict = ret['print[1]']
+            if checkErrors(lastValue,self.umbral1):
+                print("manda mail")
+                sendEmail(self.filename)
 
+            print("ultimo valor max: "+lastValue)
+            print("fecha en la cual llega al tope: "+fechaPredict)
 
 
             time.sleep(5)
