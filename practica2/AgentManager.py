@@ -177,7 +177,7 @@ class AgentManager():
                     threads.append(updateRDD(k+"/core"+str(i),v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
                     threads.append(updateRDD(k+"/core"+str(i)+"trend",v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
                     threads.append(graphRDD(k+"/core"+str(i),' ',None,'Porcentaje','Rendimiento del Nucleo '+str(i)))
-                    threads.append(trendGraph(k+"/core"+str(i)+"trend",k))
+                    threads.append(trendGraph(k+"/core"+str(i)+"trend",i))
 
                     threads[-1].start()
                     threads[-2].start()   
