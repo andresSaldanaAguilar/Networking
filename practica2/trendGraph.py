@@ -6,7 +6,7 @@ from umbrales import *
 
 class trendGraph(threading.Thread):
     
-    def __init__(self,filename,title,umbral1 = 70):
+    def __init__(self,filename,title,umbral1 = 70,umbral2 = 80,umbral3 = 90):
         super(trendGraph,self).__init__()
         self.filename = filename
         self.title = title
@@ -16,6 +16,8 @@ class trendGraph(threading.Thread):
         #self.lastTime = self.lastLecture
         self.initTime = self.lastTime - 900 #se resta el tiempo en segundos
         self.umbral1 = umbral1
+        self.umbral2 = umbral2
+        self.umbral3 = umbral3
 
     def run(self):
         while 1:
@@ -59,11 +61,23 @@ class trendGraph(threading.Thread):
                      'CDEF:tendencia=carga,POP,m,COUNT,*,b,+',
                      "LINE2:tendencia#FFBB00", 
 
-                     #establecer el umbral
+                     #establecer el umbral1
                     "CDEF:umbral25=carga,"+str(self.umbral1)+",LT,0,carga,IF",
                     "AREA:carga#00FF00:Carga del CPU",
                      "AREA:umbral25#FF9F00:Tráfico de carga mayor que "+str(self.umbral1)+"",
-                     "HRULE:"+str(self.umbral1)+"#FF0000:Umbral 1 - "+str(self.umbral1)+"%",
+                     "HRULE:"+str(self.umbral1)+"#0EBC28:Umbral 1 - "+str(self.umbral1)+"%",
+
+                    #establecer el umbral 2
+                     "CDEF:umbral30=carga,"+str(self.umbral2)+",LT,0,carga,IF",
+                    "AREA:carga#00FF00:Carga del CPU",
+                     "AREA:umbral30#FF9F00:Tráfico de carga mayor que "+str(self.umbral2)+"",
+                     "HRULE:"+str(self.umbral2)+"#E1D71E:Umbral 2 - "+str(self.umbral2)+"%",
+
+                    #establecer el umbral 3
+                     "CDEF:umbral35=carga,"+str(self.umbral3)+",LT,0,carga,IF",
+                    "AREA:carga#00FF00:Carga del CPU",
+                     "AREA:umbral35#FF9F00:Tráfico de carga mayor que "+str(self.umbral3)+"",
+                     "HRULE:"+str(self.umbral3)+"#FF0000:Umbral 3 - "+str(self.umbral3)+"%",
                      
                      
 
