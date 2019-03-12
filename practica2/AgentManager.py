@@ -6,6 +6,7 @@ import datetime
 from createRDD import *
 from updateRDD import *
 from graphRDD import *
+from trendGraph import *
 
 class AgentManager():
 
@@ -172,10 +173,16 @@ class AgentManager():
                 for core in cores: 
                     core = core[(core.rfind('.') + 1):] 
                     createRDD(k+"/core"+str(i),1,"GAUGE")
+                    trendCreate(k+"/core"+str(i),"GAUGE")
                     threads.append(updateRDD(k+"/core"+str(i),v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
+                    threads.append(updateRDD(k+"/core"+str(i)+"trend",v['community'],v['hostname'],'1.3.6.1.2.1.25.3.3.1.2.'+core,None,v['port']))
                     threads.append(graphRDD(k+"/core"+str(i),' ',None,'Porcentaje','Rendimiento del Nucleo '+str(i)))
+                    threads.append(trendGraph(k+"/core"+str(i)+"trend",k))
+
                     threads[-1].start()
                     threads[-2].start()   
+                    threads[-3].start()
+                    threads[-4].start()
                     i=i+1
                 
             #Almacenamiento ocupado en c://

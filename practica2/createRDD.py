@@ -19,4 +19,15 @@ def createRDD(filename,numcol,samplingType):
 	if ret:
 		print (rrdtool.error())
 
+def trendCreate(filename,samplingType):
+	ret = rrdtool.create(filename+"trend.rrd",
+                     "--start",'N',
+                     "--step",'10',
+                     "DS:CPUload:"+samplingType+":60:U:U",
+                     "RRA:AVERAGE:0.5:6:600",
+					 "RRA:AVERAGE:0.5:1:600") 
+	if ret:
+		print (rrdtool.error())
+
+
 
