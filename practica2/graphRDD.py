@@ -28,22 +28,30 @@ class graphRDD(threading.Thread):
 				                "LINE1:in#00FF00:"+self.label1,
 				                "LINE1:out#0000FF:"+self.label2
 				                )
-				                
+				              
+			#caso especial para RAM y PROCESAMIENTO  
 			elif self.label2 == "On use":
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
 				                "--title="+self.title,
 				                "--vertical-label="+self.unit,
+				                #definiendo los limites
+                                '--lower-limit', '0',
+                    			'--upper-limit', '100',
+                    			#haciendo el calculo del total del recurso y el recurso usado
 				                "DEF:tin="+self.filename+".rrd:tin:AVERAGE",
 				                "DEF:tout="+self.filename+".rrd:tout:AVERAGE",
 				                "DEF:pin="+self.filename+".rrd:pin:AVERAGE",
 				                "DEF:pout="+self.filename+".rrd:pout:AVERAGE",
+				                #calculando el porcentaje usado
 				                "CDEF:tmul=tin,tout,*",
 				                "CDEF:pmul=pin,pout,*",
-				                "LINE1:tmul#0000FF:"+self.label1,
-				                "LINE1:pmul#FF0000:"+self.label2
+				                "CDEF:pused=pmul,100,*", 
+				            	"CDEF:tused=pused,tmul,/",    
+				                "LINE1:tused#FF0000:"+self.label2
 				                )
-				                				               
+				      
+			#aqui manejamos el caso de los cores, pero este valor ya viene en porcentaje, asi que no hay que calcular nada          				               
 			else:
 				ret = rrdtool.graph( self.filename+".png",
 				                "--start",str(actualTime),
