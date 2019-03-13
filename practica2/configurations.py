@@ -1,4 +1,4 @@
-mailsender= "andres.saldana.aguilar@gmail.com"
+mailsender= "dummycuenta3@gmail.com"
 mailreceip="andres.saldana.aguilar@gmail.com"
-password="Keane000110"
+password="Secreto123"
 mailserver="smtp.gmail.com: 587"

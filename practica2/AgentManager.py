@@ -184,14 +184,14 @@ class AgentManager():
             if(v['OS'] == "w"):
                 createRDD(k+"/storage",4,"GAUGE")
                 u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.5.1','1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.6.1',v['port'])
-                g6 = trendGraph(k+"/storage",'Total','On use','','Almacenamiento',70,80,90)
+                g6 = trendGraph(k+"/storage",'Total','On use','','Almacenamiento',20,80,90)
                 u6.start()
                 g6.start()	 
             else:
                 createRDD(k+"/storage",4,"GAUGE")
                 u7 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.36','1.3.6.1.2.1.25.2.3.1.5.36','1.3.6.1.2.1.25.2.3.1.4.36','1.3.6.1.2.1.25.2.3.1.6.36',v['port'])
                 #special tag
-                g7 = trendGraph(k+"/storage",'Total','On use','','Almacenamiento',70,80,90)
+                g7 = trendGraph(k+"/storage",'Total','On use','','Almacenamiento',20,80,90)
                 u7.start()
                 g7.start()	  
             
@@ -200,14 +200,14 @@ class AgentManager():
             if(v['OS'] == "w"):
                 createRDD(k+"/ram",4,"GAUGE")
                 u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.3','1.3.6.1.2.1.25.2.3.1.5.3','1.3.6.1.2.1.25.2.3.1.4.3','1.3.6.1.2.1.25.2.3.1.6.3',v['port'])
-                g8 = trendGraph(k+"/ram",'Total','On use','','RAM en uso',70,80,90)
+                g8 = trendGraph(k+"/ram",'Total','On use','','RAM en uso',20,80,90)
                 u8.start()
                 g8.start()	 
             else:
                 createRDD(k+"/ram",4,"GAUGE")
                 u9 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.5.1','1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.6.1',v['port'])
                 #special tag
-                g9 = trendGraph(k+"/ram",'Total','On use','','RAM en uso',70,80,90)
+                g9 = trendGraph(k+"/ram",'Total','On use','','RAM en uso',20,80,90)
                 u9.start()
                 g9.start()	            
                                     
