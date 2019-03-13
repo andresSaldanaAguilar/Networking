@@ -45,7 +45,7 @@ class trendGraph(threading.Thread):
 								"CDEF:pused=pmul,100,*", 
 								"CDEF:carga=pused,tmul,/",    
                     
-					 "AREA:carga#00FF00:Carga CPU",
+ 					 "AREA:carga#00FF00:Carga CPU",
                      "LINE1:30",
                      "AREA:5#ff000022:stack",
                      
@@ -92,6 +92,8 @@ class trendGraph(threading.Thread):
                      "AREA:umbral35#FF9F00:Tráfico de carga mayor que "+str(self.umbral3)+"",
                      "HRULE:"+str(self.umbral3)+"#FF0000:Umbral 3 - "+str(self.umbral3)+"%",
                      
+                     
+
                      #detectar punto de corte
                     'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
@@ -111,9 +113,11 @@ class trendGraph(threading.Thread):
 								"--end",str(self.lastTime+900),
 								"--title="+self.title,
 								"--vertical-label="+self.unit,
-								"DEF:carga="+self.filename+".rrd:in:AVERAGE",                  
+								"DEF:carga="+self.filename+".rrd:in:AVERAGE", 
+								'--lower-limit', '0',
+								'--upper-limit', '100',                 
 
-                     "AREA:carga#00FF00:Carga CPU",
+                      "AREA:carga#00FF00:Carga CPU",
                      "LINE1:30",
                      "AREA:5#ff000022:stack",
                      
@@ -172,7 +176,7 @@ class trendGraph(threading.Thread):
                      #detectar cuando se sale del umbral
                      "PRINT:pintersect: %c:strftime",
         )
-			
+					
 		lastValue = ret['print[0]']
 		fechaPredict = ret['print[1]']
 		fechaBien = ret['print[2]']
@@ -182,6 +186,5 @@ class trendGraph(threading.Thread):
 			#sendEmail(self.filename)
 
 		print("ultimo valor max: "+lastValue)
-
 
 		time.sleep(5)
