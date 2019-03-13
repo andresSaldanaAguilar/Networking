@@ -6,7 +6,7 @@ from umbrales import *
 
 class trendGraph(threading.Thread):
     
-    def __init__(self,filename,title,umbral1 = 70,umbral2 = 80,umbral3 = 90):
+    def __init__(self,filename,title,umbral1 = 20,umbral2 = 80,umbral3 = 90):
         super(trendGraph,self).__init__()
         self.filename = filename
         self.title = title
@@ -82,23 +82,25 @@ class trendGraph(threading.Thread):
                      
 
                      #detectar punto de corte
-                    'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,3600,*,'+str(self.initTime)+',+',
+                    'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
                     "COMMENT: Punto",
                     "GPRINT:pintersect:%8.0lf",
-                    "PRINT:pintersect:%6.2lf %S",
+                    "PRINT:pintersect:%8.0lf %S",
 
                      #detectar cuando se sale del umbral
+                     "PRINT:pintersect: %c:strftime",
         )
             
             lastValue = ret['print[0]']
             fechaPredict = ret['print[1]']
+            fechaBien = ret['print[2]']
+            print("Fecha bien"+fechaBien)
             if checkErrors(lastValue,self.umbral1):
                 print("manda mail")
-                sendEmail(self.filename)
+                #sendEmail(self.filename)
 
             print("ultimo valor max: "+lastValue)
-            print("fecha en la cual llega al tope: "+fechaPredict)
 
 
             time.sleep(5)
