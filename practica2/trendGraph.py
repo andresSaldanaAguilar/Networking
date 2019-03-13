@@ -25,7 +25,7 @@ class trendGraph(threading.Thread):
 	
 			#caso especial para RAM y PROCESAMIENTO  
 			if self.label2 == "On use":
-				print("RAM,CPU")
+				#print("RAM,CPU")
 				ret = rrdtool.graphv( self.filename+".png",
 								"--start",str(self.initTime),
 								"--end",str(self.lastTime+900),
@@ -43,7 +43,7 @@ class trendGraph(threading.Thread):
 								"CDEF:tmul=tin,tout,*",
 								"CDEF:pmul=pin,pout,*",
 								"CDEF:pused=pmul,100,*", 
-								"CDEF:carga=pused,tmul,/",    
+								"CDEF:carga=pused,tmul,/", 
                     
  					 "AREA:carga#00FF00:Carga CPU",
                      "LINE1:30",
@@ -73,6 +73,8 @@ class trendGraph(threading.Thread):
                      "VDEF:b=carga,LSLINT",
                      'CDEF:tendencia=carga,POP,m,COUNT,*,b,+',
                      "LINE2:tendencia#FFBB00", 
+                     "CDEF:abc2=tendencia,90,100,LIMIT",
+                     "VDEF:minabc2=abc2,FIRST",
 
                      #establecer el umbral1
                     "CDEF:umbral25=carga,"+str(self.umbral1)+",LT,0,carga,IF",
@@ -98,11 +100,11 @@ class trendGraph(threading.Thread):
                     'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
                     "COMMENT: Punto",
-                    "GPRINT:pintersect:%8.0lf",
+                    "GPRINT:minabc2:%c:strftime",
                     "PRINT:pintersect:%8.0lf %S",
 
                      #detectar cuando se sale del umbral
-                     "PRINT:pintersect: %c:strftime",
+                     "PRINT:minabc2: %c:strftime",
         )             
 									
 						
@@ -145,6 +147,8 @@ class trendGraph(threading.Thread):
                      "VDEF:b=carga,LSLINT",
                      'CDEF:tendencia=carga,POP,m,COUNT,*,b,+',
                      "LINE2:tendencia#FFBB00", 
+                     "CDEF:abc2=tendencia,90,100,LIMIT",
+                     "VDEF:minabc2=abc2,FIRST",
 
                      #establecer el umbral1
                     "CDEF:umbral25=carga,"+str(self.umbral1)+",LT,0,carga,IF",
@@ -170,11 +174,11 @@ class trendGraph(threading.Thread):
                     'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
                     "COMMENT: Punto",
-                    "GPRINT:pintersect:%8.0lf",
+                    "GPRINT:minabc2:%c:strftime",
                     "PRINT:pintersect:%8.0lf %S",
 
                      #detectar cuando se sale del umbral
-                     "PRINT:pintersect: %c:strftime",
+                     "PRINT:minabc2: %c:strftime",
         )
 					
 		lastValue = ret['print[0]']
