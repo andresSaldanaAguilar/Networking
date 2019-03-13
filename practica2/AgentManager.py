@@ -6,6 +6,7 @@ import datetime
 from createRDD import *
 from updateRDD import *
 from graphRDD import *
+from logManager import *
 
 class AgentManager():
 
