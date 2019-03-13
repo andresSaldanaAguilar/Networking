@@ -81,8 +81,6 @@ class trendGraph(threading.Thread):
                     "AREA:carga#00FF00:Carga del CPU",
                      "AREA:umbral35#FF9F00:Tráfico de carga mayor que "+str(self.umbral3)+"",
                      "HRULE:"+str(self.umbral3)+"#FF0000:Umbral 3 - "+str(self.umbral3)+"%",
-                     
-                     
 
                      #detectar punto de corte
                     'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
@@ -99,7 +97,7 @@ class trendGraph(threading.Thread):
             print("Fecha bien"+fechaBien)
             if checkErrors(lastValue,self.umbral1):
                 print("manda mail")
-                #sendEmail(self.filename,"CPU")
+                sendEmail(self.filename,"CPU")
 
             print("ultimo valor max: "+lastValue)
 
