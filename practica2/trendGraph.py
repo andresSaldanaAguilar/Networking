@@ -60,12 +60,15 @@ class trendGraph(threading.Thread):
                      "VDEF:b=carga,LSLINT",
                      'CDEF:tendencia=carga,POP,m,COUNT,*,b,+',
                      "LINE2:tendencia#FFBB00", 
+                     "CDEF:abc2=tendencia,90,100,LIMIT",
+                     "VDEF:minabc2=abc2,FIRST",
+
 
                      #establecer el umbral1
                     "CDEF:umbral25=carga,"+str(self.umbral1)+",LT,0,carga,IF",
                     "AREA:carga#00FF00:Carga del CPU",
-                     "AREA:umbral25#FF9F00:Tráfico de carga mayor que "+str(self.umbral1)+"",
-                     "HRULE:"+str(self.umbral1)+"#0EBC28:Umbral 1 - "+str(self.umbral1)+"%",
+                    "AREA:umbral25#FF9F00:Tráfico de carga mayor que "+str(self.umbral1)+"",
+                    "HRULE:"+str(self.umbral1)+"#0EBC28:Umbral 1 - "+str(self.umbral1)+"%",
 
                     #establecer el umbral 2
                      "CDEF:umbral30=carga,"+str(self.umbral2)+",LT,0,carga,IF",
@@ -85,20 +88,18 @@ class trendGraph(threading.Thread):
                     'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
                     "COMMENT: Punto",
-                    "GPRINT:pintersect:%8.0lf",
-                    "PRINT:pintersect:%8.0lf %S",
+                    #"GPRINT:pintersect:%c:strftime"
 
                      #detectar cuando se sale del umbral
-                     "PRINT:pintersect: %c:strftime",
+                     "PRINT:minabc2: %c:strftime"
         )
             
             lastValue = ret['print[0]']
-            fechaPredict = ret['print[1]']
-            fechaBien = ret['print[2]']
+            fechaBien = ret['print[1]']
             print("Fecha bien"+fechaBien)
             if checkErrors(lastValue,self.umbral1):
                 print("manda mail")
-                #sendEmail(self.filename)
+                #sendEmail(self.filename,"CPU")
 
             print("ultimo valor max: "+lastValue)
 

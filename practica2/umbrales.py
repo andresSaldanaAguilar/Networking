@@ -12,10 +12,10 @@ def checkErrors(valor, umbral):
     except:
         return False
 
-def sendEmail(foto):
+def sendEmail(foto, tipo):
     try:
         #we create the email, and we substract the information of the sender from the configurations file
-        subject = "Notificación de rebaso de umbral"
+        subject = "Notificación de rebaso de umbral de "+tipo
         msg = MIMEMultipart()
         msg['Subject'] = subject
         msg['From'] = mailsender
