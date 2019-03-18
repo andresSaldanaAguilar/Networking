@@ -1,8 +1,8 @@
 {
     "1": {
         "OS": "w",
-        "community": "comunidadEquipo3_grupo4cm1",
-        "hostname": "192.168.0.8",
+        "community": "grupo4cm1",
+        "hostname": "10.100.69.48",
         "port": 161,
         "version": "2"
     },
