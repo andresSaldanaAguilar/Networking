@@ -46,6 +46,7 @@ def menu():
             
         if opc == 4:
             print("Cerrando monitores.")
+            am.stopAgentMonitoring()
             break
 
 main()

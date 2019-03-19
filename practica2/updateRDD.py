@@ -16,9 +16,10 @@ class updateRDD(threading.Thread):
 		self.oid3 = oid3
 		self.oid4 = oid4		
 		self.port = port
+		self._stop_event = True
 	
 	def run(self):
-		while 1:
+		while self.stopped():
 			total_input_traffic = requestRT(self.community,self.host,self.oid1,self.port)
 				
 			if self.oid2 is not None and self.oid3 is None and self.oid4 is None:
@@ -61,8 +62,12 @@ class updateRDD(threading.Thread):
 					#print("sin respuesta del agente: "+self.host)
 				time.sleep(5)
 				
-		
+		print("proceso terminado")
 
-		#if ret:
-			#print (rrdtool.error())
-			#time.sleep(10)
+			
+			
+	def stop(self):
+		self._stop_event = False
+
+	def stopped(self):
+		return self._stop_event

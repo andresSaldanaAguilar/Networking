@@ -13,10 +13,11 @@ class graphRDD(threading.Thread):
 		self.label2 = label2
 		self.unit = unit
 		self.title = title
+		self._stop_event = True
 			
 	def run(self):
 		actualTime = calendar.timegm(time.gmtime())
-		while 1:
+		while self.stopped():
 		
 			if self.label2 is not None and self.label2 != "On use":
 				ret = rrdtool.graph( self.filename+".png",
@@ -63,7 +64,8 @@ class graphRDD(threading.Thread):
 			time.sleep(5)
 			
 			
-				                #"CDEF:min=in,out,MAX",
-				                #"CDEF:max=in,out,GT,in,out,IF",
-				                #"LINE1:sum#FF0000:sum",
-				                #"LINE1:min#FF00FF:min",
+	def stop(self):
+		self._stop_event = False
+
+	def stopped(self):
+		return self._stop_event

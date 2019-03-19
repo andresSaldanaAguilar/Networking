@@ -19,9 +19,11 @@ class trendGraph(threading.Thread):
         self.umbral1 = umbral1
         self.umbral2 = umbral2
         self.umbral3 = umbral3
+        self.sent = False
+        self._stop_event = True
 
     def run(self):
-        while 1:
+        while self.stopped():
     
             #caso especial para RAM y PROCESAMIENTO  
             if self.label2 == "On use":
@@ -183,19 +185,18 @@ class trendGraph(threading.Thread):
         fechaPredict = ret['print[1]']
         fechaBien = ret['print[2]']
         print("Fecha bien"+fechaBien)
-        if checkErrors(lastValue,self.umbral1):
-            
-            if checkErrors(lastValue,self.umbral2):
-                if checkErrors(lastValue,self.umbral3):
-                    print("manda mail")
-                    sendEmail(self.filename + "Ha rebasado el umbral 3")
-                else:
-                    print("manda mail")
-                    sendEmail(self.filename + "Ha rebasado el umbral 2")
-            else:
-                print("manda mail")
-                sendEmail(self.filename + "Ha rebasado el umbral 1")
 
+        if checkErrors(lastValue,self.umbral3):
+            print("Rebaso de umbral 3")
+            if(not sent):
+            	sendEmail(self.filename + "Ha rebasado el umbral 3")
+            	self.sent = True
         print("ultimo valor max: "+lastValue)
 
         time.sleep(5)
+
+	def stop(self):
+		self._stop_event = False
+
+	def stopped(self):
+		return self._stop_event
