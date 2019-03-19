@@ -189,14 +189,14 @@ class trendGraph(threading.Thread):
         if checkErrors(lastValue,self.umbral3):
             print("Rebaso de umbral 3")
             if(not sent):
-            	sendEmail(self.filename + "Ha rebasado el umbral 3")
-            	self.sent = True
+                sendEmail(self.filename + "Ha rebasado el umbral 3")
+                self.sent = True
         print("ultimo valor max: "+lastValue)
 
         time.sleep(5)
 
-	def stop(self):
-		self._stop_event = False
+    def stop(self):
+        self._stop_event = False
 
-	def stopped(self):
-		return self._stop_event
+    def stopped(self):
+        return self._stop_event
