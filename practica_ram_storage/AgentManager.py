@@ -1,0 +1,162 @@
+import json
+from pprint import pprint
+import os.path
+from getSNMP import *
+import datetime
+from createRDD import *
+from updateRDD import *
+from graphRDD import *
+from trendGraph import *
+from logManager import *
+
+class AgentManager():
+
+    def __init__(self):
+        #this dictionary carries all the existent agents
+        self.data = {}
+        self.pool = {}
+        #filling the dictionary
+        if os.path.exists('agents.json') and os.path.getsize('agents.json') > 0:
+            with open('agents.json', 'r') as f:
+                self.data = json.load(f)  
+
+    def addAgent(
+        self, idAgent, hostname, version, port, community, os
+    ):				
+        newAgent = {  
+            'hostname': hostname,
+            'version': version,
+            'port': port,
+            'community': community,
+            'OS': os
+        }
+
+        self.data[str(idAgent)] = newAgent
+        with open('agents.json', 'w') as f:
+            json.dump(self.data, f,sort_keys=True, indent=4)
+
+        return True
+
+    def getMIBAgent(
+        self, idAgent
+    ):
+        name = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.5.0', #sysname
+            self.data[str(idAgent)]['port']
+        )
+        descr = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.1.0', #sysdescr
+            self.data[str(idAgent)]['port']
+        )
+        ifnumer = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.2.1.0', #ifnumber
+            self.data[str(idAgent)]['port']
+        )
+        uptime = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.3.0', #sysuptime
+            self.data[str(idAgent)]['port']
+        )
+        if(uptime != ""):
+            seconds = int(uptime)/100
+        
+        location = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.6.0', #syslocaton (physical)
+            self.data[str(idAgent)]['port']
+        )
+        contact = request(
+            self.data[str(idAgent)]['community'],
+            self.data[str(idAgent)]['hostname'],
+            '1.3.6.1.2.1.1.4.0', #syscontact
+            self.data[str(idAgent)]['port']
+        )
+        
+        if(uptime != ""):
+            print("--------------- Agent info  -----------------------")
+            print("Host: "+self.data[str(idAgent)]['hostname'])
+            print("Name: "+name)
+            print("Version: "+self.data[str(idAgent)]['version'])
+            print("Description: "+descr)
+            print("Number of interfaces: "+ifnumer)
+            print("Up since: " + str(datetime.timedelta(seconds=seconds)))
+            print("Location: "+location)
+            print("Contact: "+contact)
+            print("---------------------------------------------------")
+        else:
+            print("--------------- No Agent info  -----------------------")
+
+    def removeAgent(
+        self, idAgent
+    ):
+        del self.data[str(idAgent)]
+        with open('agents.json', 'w') as f:
+            json.dump(self.data, f,sort_keys=True, indent=4)
+
+        return True
+
+    def readJson(
+        self
+    ):
+        with open('agents.json') as f:
+            self.data = json.load(f)
+            pprint(self.data)
+            
+    def agentMonitoring(
+        self
+    ):
+        for k,v in self.data.items():
+
+            try:  
+                os.mkdir(str(k))
+            except OSError:  
+                print ("Creation of the directory %s failed / Already Exists" % k)
+            else:  
+                print ("Successfully created the directory %s " % k)
+
+           
+            #Almacenamiento ocupado en c://           
+            if(v['OS'] == "w"):
+                createRDD(k+"/storage",4,"GAUGE")
+                u6 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.5.1','1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.6.1',v['port'])
+                g6 = trendGraph(k+"/storage",'Total','On use','','Almacenamiento',70,80,90)
+                u6.start()
+                g6.start()	 
+            else:
+                createRDD(k+"/storage",4,"GAUGE")
+                u7 = updateRDD(k+"/storage",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.36','1.3.6.1.2.1.25.2.3.1.5.36','1.3.6.1.2.1.25.2.3.1.4.36','1.3.6.1.2.1.25.2.3.1.6.36',v['port'])
+                #special tag
+                g7 = trendGraph(k+"/storage",'Total','On use','','Almacenamiento',70,80,90)
+                u7.start()
+                g7.start()	  
+            
+            #RAM en uso
+           
+            if(v['OS'] == "w"):
+                createRDD(k+"/ram",4,"GAUGE")
+                u8 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.3','1.3.6.1.2.1.25.2.3.1.5.3','1.3.6.1.2.1.25.2.3.1.4.3','1.3.6.1.2.1.25.2.3.1.6.3',v['port'])
+                g8 = trendGraph(k+"/ram",'Total','On use','','RAM en uso',40,50,65)
+                u8.start()
+                g8.start()	 
+            else:
+                createRDD(k+"/ram",4,"GAUGE")
+                u9 = updateRDD(k+"/ram",v['community'],v['hostname'],'1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.5.1','1.3.6.1.2.1.25.2.3.1.4.1','1.3.6.1.2.1.25.2.3.1.6.1',v['port'])
+                #special tag
+                g9 = trendGraph(k+"/ram",'Total','On use','','RAM en uso',40,50,65)
+                u9.start()
+                g9.start()	            
+                                    
+       
+            
+
+
+
+    
