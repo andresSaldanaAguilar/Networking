@@ -6,15 +6,16 @@ from umbrales import *
 
 class trendGraph(threading.Thread):
     
-    def __init__(self,filename,title,umbral1 = 20,umbral2 = 80,umbral3 = 90):
+    def __init__(self,filename,title,umbral1 = 40,umbral2 = 60,umbral3 = 70):
         super(trendGraph,self).__init__()
+        self.bandera = 1
         self.filename = filename
         self.title = title
         self.lastLecture = int(rrdtool.last(self.filename+".rrd"))
 
         self.lastTime = calendar.timegm(time.gmtime())
         #self.lastTime = self.lastLecture
-        self.initTime = self.lastTime - 900 #se resta el tiempo en segundos
+        self.initTime = self.lastTime #se resta el tiempo en segundos
         self.umbral1 = umbral1
         self.umbral2 = umbral2
         self.umbral3 = umbral3
@@ -86,7 +87,7 @@ class trendGraph(threading.Thread):
                     'CDEF:cintersect=tendencia,0,EQ,tendencia,0,IF,'+str(self.umbral1)+',+,m,/,b,+,100,/,900,*,'+str(self.initTime)+',+',
                     "VDEF:pintersect=cintersect,MAXIMUM",
                     "COMMENT: Punto",
-                    #"GPRINT:pintersect:%c:strftime"
+                    "GPRINT:minabc2:%c:strftime",
 
                      #detectar cuando se sale del umbral
                      "PRINT:minabc2: %c:strftime"
@@ -95,9 +96,10 @@ class trendGraph(threading.Thread):
             lastValue = ret['print[0]']
             fechaBien = ret['print[1]']
             print("Fecha bien"+fechaBien)
-            if checkErrors(lastValue,self.umbral1):
+            if checkErrors(lastValue,self.umbral3) and self.bandera==1:
                 print("manda mail")
                 sendEmail(self.filename,"CPU")
+                self.bandera = 0
 
             print("ultimo valor max: "+lastValue)
 

@@ -1,9 +1,9 @@
 {
     "1": {
         "OS": "l",
-        "community": "grupo4cm1",
-        "hostname": "127.0.0.1",
-        "port": 161,
+        "community": "variation/linux-full-walk",
+        "hostname": "10.100.71.200",
+        "port": 1024,
         "version": "2"
     }
 }
