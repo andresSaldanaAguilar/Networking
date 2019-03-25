@@ -6,20 +6,20 @@ import time, threading
 class graphRDD(threading.Thread):
 
     def __init__(self,filename,label1,unit,title,sem):
-    	super(graphRDD,self).__init__()
-    	self.filename = filename
-    	self.label1 = label1
-    	self.unit = unit
-    	self.title = title
-    	self.sem = sem
+        super(graphRDD,self).__init__()
+        self.filename = filename
+        self.label1 = label1
+        self.unit = unit
+        self.title = title
+        self.sem = sem
 
     def run(self):
         while True:
             self.sem.aquire()
-	        endDate = calendar.timegm(time.gmtime()) + 100
-        	begDate = calendar.timegm(time.gmtime()) - 100
-        	rrdtool.tune(self.filename + ".rrd", '--alpha', '0.05')
-        	ret = rrdtool.graph(self.filename+".png",
+            endDate = calendar.timegm(time.gmtime()) + 100
+            begDate = calendar.timegm(time.gmtime()) - 100
+            rrdtool.tune(self.filename + ".rrd", '--alpha', '0.05')
+            ret = rrdtool.graph(self.filename+".png",
                     '--start', str(begDate), 
                     '--end', str(endDate), 
                     '--title=' + self.title,
@@ -48,5 +48,5 @@ class graphRDD(threading.Thread):
             self.sem.release()
             time.sleep(0.25)
 
-        		
+                
 
