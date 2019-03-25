@@ -2,10 +2,11 @@ import json
 from pprint import pprint
 import os.path
 from getSNMP import *
-import datetime, time
+import datetime
 from createRDD import *
 from updateRDD import *
 from graphRDD import *
+import threading
 
 class AgentManager():
 
@@ -125,25 +126,19 @@ class AgentManager():
             createRDD(k+"/TCP_OUT","COUNTER")
             createRDD(k+"/TCP_IN","COUNTER")
         
-        while True:
-                
-            for k,v in self.data.items():
+        sem = threading.Semaphore()        
+        for k,v in self.data.items():
 
-                #estadisticas TCP
-                
-                updates.append(updateRDD(k+"/TCP_IN",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',v['port']))
-                graphs.append(graphRDD(k+"/TCP_IN",'total_in_tcp','','TCP IN')) 
+            #estadisticas TCP
+            
+            threads.append(updateRDD(k+"/TCP_IN",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',v['port']),sem)
+            threads.append(graphRDD(k+"/TCP_IN",'total_in_tcp','','TCP IN'),sem) 
 
-                #numero de conexiones tcp
+            #numero de conexiones tcp
 
-                updates.append(updateRDD(k+"/TCP_OUT",v['community'],v['hostname'],'1.3.6.1.2.1.6.11.0',v['port']))
-                graphs.append(graphRDD(k+"/TCP_OUT",'total_out_tcp','','TCP OUT'))
-         
-     
-            for update in updates:
-                update.update();
+            threads.append(updateRDD(k+"/TCP_OUT",v['community'],v['hostname'],'1.3.6.1.2.1.6.11.0',v['port']),sem)
+            threads.append(graphRDD(k+"/TCP_OUT",'total_out_tcp','','TCP OUT'),sem)
 
-            for graph in graphs:
-                graph.graph();
+        for i in range(len(threads)):
+            threads[i].start()
 
-            time.sleep(1)
