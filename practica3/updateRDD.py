@@ -1,6 +1,7 @@
 import time, threading
 import rrdtool
 from getSNMP import *
+from Notify import *
 total_input_traffic = 0
 total_output_traffic = 0
 
@@ -27,6 +28,7 @@ class updateRDD(threading.Thread):
 			#else:
 				#no hay respuesta
 				#print("sin respuesta del agente: "+self.host)
+
 			self.sem.release()
 			time.sleep(0.25)
 
