@@ -15,7 +15,7 @@ class graphRDD(threading.Thread):
 
     def run(self):
         while True:
-            self.sem.aquire()
+            self.sem.acquire()
             endDate = calendar.timegm(time.gmtime()) + 100
             begDate = calendar.timegm(time.gmtime()) - 100
             rrdtool.tune(self.filename + ".rrd", '--alpha', '0.05')
