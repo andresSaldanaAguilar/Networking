@@ -2,6 +2,7 @@ import sys
 import rrdtool
 import calendar
 import time, threading
+from enviaMail import *
 
 class graphRDD(threading.Thread):
 
@@ -13,6 +14,7 @@ class graphRDD(threading.Thread):
         self.title = title
         self.sem = sem
         self.penultima_falla = None
+        self.mail = enviaMail()
 
 
     def run(self):
@@ -76,10 +78,14 @@ class graphRDD(threading.Thread):
                         if(ultima_falla == 1):
                             print("deteccion de error en" + self.filename + "a las "+time_falla)
                             self.penultima_falla = ultima_falla
-                            #send mail inicio 
+                            self.mail.armaMail("deteccion de error en" + self.filename + "a las "+time_falla,self.filename)
+                            self.mail.enviaMail()
+
                         elif(ultima_falla == 0):
                             print("fin de falla en" + self.filename + "a las "+time_falla)
                             self.penultima_falla = ultima_falla
+                            self.mail.armaMail("fin de falla en" + self.filename + "a las "+time_falla,self.filename)
+                            self.mail.enviaMail()
                             #send mail fin
                     else:
                         print("sin falla en "+ self.filename)
@@ -88,6 +94,8 @@ class graphRDD(threading.Thread):
                 elif(fmin != fmax):
                     print("deteccion de error en" + self.filename + "a las "+time_falla)
                     self.penultima_falla = ultima_falla
+                    self.mail.armaMail("deteccion de error en" + self.filename + "a las "+time_falla,self.filename)
+                    self.mail.enviaMail()
                    
 
                 else:

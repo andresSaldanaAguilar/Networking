@@ -1,11 +1,4 @@
 {
-    "1": {
-        "OS": "w",
-        "community": "grupo4cm1",
-        "hostname": "10.100.69.48",
-        "port": 161,
-        "version": "2"
-    },
     "2": {
         "OS": "l",
         "community": "grupo4cm1",
