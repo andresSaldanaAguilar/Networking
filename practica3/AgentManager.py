@@ -6,6 +6,7 @@ import datetime
 from createRDD import *
 from updateRDD import *
 from graphRDD import *
+from Notify import *
 import threading
 
 class AgentManager():
@@ -128,12 +129,12 @@ class AgentManager():
         sem = threading.Semaphore()        
         for k,v in self.data.items():
 
-            #estadisticas TCP
+            #TCP out
             
             threads.append(updateRDD(k+"/TCP_IN",v['community'],v['hostname'],'1.3.6.1.2.1.6.10.0',v['port'],sem))
             threads.append(graphRDD(k+"/TCP_IN",'total_in_tcp','','TCP IN',sem)) 
 
-            #numero de conexiones tcp
+            #TCP in
 
             threads.append(updateRDD(k+"/TCP_OUT",v['community'],v['hostname'],'1.3.6.1.2.1.6.11.0',v['port'],sem))
             threads.append(graphRDD(k+"/TCP_OUT",'total_out_tcp','','TCP OUT',sem))
