@@ -19,7 +19,9 @@ class graphRDD(threading.Thread):
         while True:
             self.sem.acquire()
             endDate = rrdtool.last(self.filename + ".rrd")
-            begDate = endDate - 2000  
+            begDate = endDate - 1000
+            DatosAyer=begDate - 86400
+            FinAyer=endDate - 86400
             #rrdtool.tune(self.filename + ".rrd", '--alpha', '0.99')
             ret = rrdtool.graphv(
                     self.filename+".png",
@@ -28,15 +30,17 @@ class graphRDD(threading.Thread):
                     '--title=' + self.title,
                     "--vertical-label=Bytes/s",
                     '--slope-mode',
-                    "DEF:obs=" + self.filename + ".rrd:in:AVERAGE",                    
+                    "DEF:obs=" + self.filename + ".rrd:in:AVERAGE", 
+                    "DEF:obsAyer=" + self.filename + ".rrd:in:AVERAGE:start="+str(DatosAyer)+":end="+str(FinAyer),                   
                     "DEF:pred=" + self.filename + ".rrd:in:HWPREDICT",
                     "DEF:dev=" + self.filename + ".rrd:in:DEVPREDICT",
                     "DEF:fail=" + self.filename + ".rrd:in:FAILURES",
-
+                    'SHIFT:obsAyer:86400',
                 #"RRA:DEVSEASONAL:1d:0.1:2",
                 #"RRA:DEVPREDICT:5d:5",
                 #"RRA:FAILURES:1d:7:9:5""
                     "CDEF:scaledobs=obs,8,*",
+                    "CDEF:scaledobsAyer=obsAyer,8,*",
                     "CDEF:upper=pred,dev,2,*,+",
                     "CDEF:lower=pred,dev,2,*,-",
                     "CDEF:scaledupper=upper,8,*",
@@ -44,6 +48,7 @@ class graphRDD(threading.Thread):
                     "CDEF:scaledpred=pred,8,*",
                 "TICK:fail#FDD017:1.0:Fallas",
                 "LINE3:scaledobs#00FF00:In traffic",
+                "AREA:scaledobsAyer#9C9C9C:Ayer",
                 "LINE1:scaledpred#FF00FF:Prediccion\\n",
                 "LINE1:scaledupper#ff0000:Upper Bound Average bits in\\n",
                 "LINE1:scaledlower#0000FF:Lower Bound Average bits in",
@@ -57,6 +62,7 @@ class graphRDD(threading.Thread):
 
 
             if("nan" not in ret['print[1]']):
+
                 time_falla=ret['print[0]']
                 ultima_falla= int(float(ret['print[1]'].strip()))
                 fmin= int(ret['print[2]'])
@@ -70,20 +76,19 @@ class graphRDD(threading.Thread):
                         if(ultima_falla == 1):
                             print("deteccion de error en" + self.filename + "a las "+time_falla)
                             self.penultima_falla = ultima_falla
+                            #send mail inicio 
                         elif(ultima_falla == 0):
                             print("fin de falla en" + self.filename + "a las "+time_falla)
                             self.penultima_falla = ultima_falla
+                            #send mail fin
                     else:
                         print("sin falla en "+ self.filename)
 
-                #primeras detecciones
+                #primera deteccion
                 elif(fmin != fmax):
-                    if(ultima_falla == 1):
-                        print("deteccion de error en" + self.filename + "a las "+time_falla)
-                        self.penultima_falla = ultima_falla
-                    elif(ultima_falla == 0):
-                        print("fin de error en" + self.filename + "a las "+time_falla)
-                        self.penultima_falla = ultima_falla
+                    print("deteccion de error en" + self.filename + "a las "+time_falla)
+                    self.penultima_falla = ultima_falla
+                   
 
                 else:
                     print("sin falla en "+ self.filename)
@@ -94,6 +99,7 @@ class graphRDD(threading.Thread):
                 fmin= ret['print[2]']
                 fmax= ret['print[3]']
                 print(time_falla + "-" + ultima_falla + "-" + fmin + "-" + fmax+"-"+self.filename)            
+                    
 
             self.sem.release()
             time.sleep(0.25)
