@@ -3,25 +3,23 @@ import poplib
 import email
 
 
-SERVER = "server_name"   
-USER = 'andres.saldana.aguilar@gmail.com' 
-PASSWORD = 'Keane000110'
- 
+SERVER = "pop3.redes3.com"
+USER = 'persona1'
+PASSWORD = '1234'
 
-server = poplib.POP3_SSL('pop.googlemail.com', '995') 
-server.user(USER)
-server.pass_(PASSWORD)
- 
- 
+
+server = poplib.POP3(SERVER,110)
+print(server.user(USER))
+print(server.pass_(PASSWORD))
+
+
 numMessages = len(server.list()[1])
-if (numMessages > 15):
-    numMessages=1
-for i in range(numMessages) :
-    (server_msg, body, octets) = server.retr(i+1)
-    for j in body:
-        try:
-            msg = email.message_from_string(j.decode("utf-8"))
-            strtext=msg.get_payload()
-            print (server_msg)
-        except:
-            pass
+print(numMessages)
+(server_msg, body, octets) = server.retr(numMessages)
+for j in body:
+    try:
+        msg = email.message_from_string(j.decode("utf-8"))
+        strtext=msg.get_payload()
+        print (strtext)
+    except:
+        pass

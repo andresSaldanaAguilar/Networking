@@ -1,21 +1,19 @@
 import smtplib, ssl
 import time
 
-port = 465  # For SSL
-smtp_server = "smtp.gmail.com"
-sender_email = "andres.saldana.aguilar@gmail.com"  # Enter your address
-receiver_email = "pollyketpo@gmsfsfil.com"  # Enter receiver address
-password = "Keane000110"
+smtp_server = "smtp.redes3.com"
+sender_email = "persona2@redes3.com"  # Enter your address
+receiver_email = "persona1@redes3.com"  # Enter receiver address
+password = "1234"
 message = """\
-Subject: Hi there
+Subject: Hola
 
-This message is sent from Python."""
+Esta es una prueba"""
 
-context = ssl.create_default_context()
-with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-    start = time.time()
-    server.login(sender_email, password)
-    server.sendmail(sender_email, receiver_email, message)
-    print(server.quit())
-    end = time.time()
-    print(end - start)
+
+server =  smtplib.SMTP(smtp_server)
+start = time.time()
+server.sendmail(sender_email, receiver_email, message)
+print(server.quit())
+end = time.time()
+print(end - start)
