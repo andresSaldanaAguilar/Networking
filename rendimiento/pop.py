@@ -2,24 +2,33 @@
 import poplib
 import email
 
+#Checa por el ultimo correo en el buzon:
+#False: no ha encontrado el correo
+#True: encontro el correo
+def popSCAN():
+    pop_server = "pop3.redes3.com"
+    user = 'persona3'
+    password = '1234'
+    return_value = False
 
-SERVER = "pop3.redes3.com"
-USER = 'persona1'
-PASSWORD = '1234'
+    pop_server = poplib.POP3(pop_server,110)
+    pop_server.user(user)
+    pop_server.pass_(password)
 
+    numMessages = len(pop_server.list()[1])
+    server_msg, body, octets = pop_server.retr(numMessages)
+    print(numMessages)
+    for j in body:
+        try:
+            msg = email.message_from_string(j.decode("utf-8"))
+            msg_text = msg.get_payload()
+            if "SMTP_SENSOR" in msg_text:
+                return_value = True
+                pop_server.dele(numMessages)
+        except:
+            pass
 
-server = poplib.POP3(SERVER,110)
-print(server.user(USER))
-print(server.pass_(PASSWORD))
+    pop_server.quit()
+    return return_value
 
-
-numMessages = len(server.list()[1])
-print(numMessages)
-(server_msg, body, octets) = server.retr(numMessages)
-for j in body:
-    try:
-        msg = email.message_from_string(j.decode("utf-8"))
-        strtext=msg.get_payload()
-        print (strtext)
-    except:
-        pass
+print(popSCAN())
