@@ -25,7 +25,7 @@ class SMTP_SENSOR():
             smtp_end = time.time()
             self.smtp_imap_time =(smtp_end - smtp_start)
         except:
-            self.smtp_imap_time = "down"
+            self.smtp_imap_time = "SMTP down"
 
         imap_tries = 0
         imap_start = time.time()
@@ -36,8 +36,8 @@ class SMTP_SENSOR():
             imap_tries = imap_tries+1
 
         if(imap_tries > 4):
-            self.imap_total = "down"
-            self.imap_time = "down"
+            self.imap_total = "IMAP down"
+            self.imap_time = "IMAP down"
         else:
             imap_end = time.time()
             self.imap_time =(imap_end - imap_start)
@@ -54,7 +54,7 @@ class SMTP_SENSOR():
             smtp_end = time.time()
             self.smtp_pop_time =(smtp_end - smtp_start)
         except:
-            self.smtp_pop_time = "down"
+            self.smtp_pop_time = "SMTP down"
 
         pop_tries = 0
         pop_start = time.time()
@@ -65,8 +65,8 @@ class SMTP_SENSOR():
             pop_tries = pop_tries+1
 
         if(pop_tries > 4):
-            self.imap_total = "down"
-            self.imap_time = "down"
+            self.pop_total = "POP down"
+            self.pop_time = "POP down"
         else:
             pop_end = time.time()
             self.pop_time =(pop_end - pop_start)
@@ -134,6 +134,6 @@ sensor = SMTP_SENSOR()
 
 while(True):
     sensor.scan_smtp()
-    print(sensor.imap_total)
-    print(sensor.imap_total)
+    print("Tiempo total de smtp-imap: "+str(sensor.imap_total))
+    print("Tiempo total de smtp-pop: "+str(sensor.imap_total))
     time.sleep(2)
