@@ -35,7 +35,9 @@ class RouterManager():
                 ftp.login(user='rcp', passwd = 'rcp')
                 local_filename = os.path.join(r''+os.path.dirname(os.path.realpath(__file__)), 'conf_'+ip)
                 file = open(local_filename, 'wb')
-                print(ftp.retrbinary('RETR startup-config' , file.write))
+                print("Nombre del archivo a traer de "+ip+":")
+                filename = input()
+                print(ftp.retrbinary('RETR '+filename , file.write))
                 file.close()
                 ftp.quit()
 
@@ -46,7 +48,9 @@ class RouterManager():
             ftp.login(user='rcp', passwd = 'rcp')
             local_filename = os.path.join(r''+os.path.dirname(os.path.realpath(__file__)), 'transfer_file')
             file = open(local_filename, 'wb')
-            print(ftp.retrbinary('RETR startup-config' , file.write))
+            print("Nombre del archivo a traer de "+ip+":")
+            filename = input()
+            print(ftp.retrbinary('RETR '+filename , file.write))
             file.close()
             ftp.quit()
 

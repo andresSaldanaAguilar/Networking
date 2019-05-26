@@ -1,5 +1,7 @@
 import threading
 import os
+from ftplib import FTP
+import time
 
 class monitor(threading.Thread):
 
@@ -21,4 +23,14 @@ class monitor(threading.Thread):
                     pass
                 else:
                     pass
+
+                ftp = FTP(ip)
+                ftp.login(user='rcp', passwd = 'rcp')
+                local_filename = os.path.join(r''+os.getcwd()+'/'+ip, time.strftime("%d-%m-%Y")+"_"+time.strftime("%H:%M"))
+                file = open(local_filename, 'wb')
+                ftp.retrbinary('RETR startup-config', file.write)
+                file.close()
+                ftp.quit()
+
+            time.sleep(60)
             self.sem.release()
