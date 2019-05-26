@@ -33,7 +33,7 @@ class RouterManager():
             for ip in ips:
                 ftp = FTP(ip)
                 ftp.login(user='rcp', passwd = 'rcp')
-                local_filename = os.path.join(r''+os.path.dirname(os.path.realpath(__file__)), 'conf_'+ip)
+                local_filename = os.path.join(r''+os.getcwd(), 'conf_'+ip)
                 file = open(local_filename, 'wb')
                 print("Nombre del archivo a traer de "+ip+":")
                 filename = input()
@@ -46,7 +46,7 @@ class RouterManager():
             ip = input()
             ftp = FTP(ip)
             ftp.login(user='rcp', passwd = 'rcp')
-            local_filename = os.path.join(r''+os.path.dirname(os.path.realpath(__file__)), 'transfer_file')
+            local_filename = os.path.join(r''+os.getcwd(), 'transfer_file')
             file = open(local_filename, 'wb')
             print("Nombre del archivo a traer de "+ip+":")
             filename = input()
@@ -56,7 +56,7 @@ class RouterManager():
 
             print("Direcciones IP a mandar informacion (separarlas con espacios):")
             ips = input().split()
-            file = open(os.path.dirname(os.path.realpath(__file__))+"/transfer_file",'rb')
+            file = open(os.getcwd()+"/transfer_file",'rb')
 
             for ip in ips:
                 ftp = FTP(ip)
@@ -67,7 +67,7 @@ class RouterManager():
                 ftp.quit()
 
             file.close()
-            os.remove(os.path.dirname(os.path.realpath(__file__))+"/transfer_file")
+            os.remove(os.getcwd()+"/transfer_file")
 
         elif option == "3":
             print("Archivo a mandar:")
@@ -77,7 +77,7 @@ class RouterManager():
             for ip in ips:
                 ftp = FTP(ip)
                 ftp.login(user='rcp', passwd = 'rcp')
-                file = open(os.path.dirname(os.path.realpath(__file__))+"/"+filename,'rb')
+                file = open(os.getcwd()+"/"+filename,'rb')
                 print("Nombre para archivo en "+ip+":")
                 destination_name = input()
                 print(ftp.storbinary('STOR '+destination_name, file))
