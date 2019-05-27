@@ -8,8 +8,8 @@ class mail(object):
     def __init__(self,asunto,path1,path2,filename1,filename2):
         self.msg = MIMEMultipart()
         self.msg['Subject'] = asunto
-        self.msg['From'] = 'andres.saldana.aguilar@gmail.com'
-        self.msg['To'] = 'pollyketpo@gmail.com'
+        self.msg['From'] = 'example@gmail.com'
+        self.msg['To'] = 'destination@gmail.com'
 
         #adjuntamos el primer archivo (antes del cambio)
         f1 = MIMEBase('application', "octet-stream")
@@ -29,6 +29,6 @@ class mail(object):
     def sendMail(self):
         mserver = smtplib.SMTP('smtp.gmail.com: 587')
         mserver.starttls()
-        mserver.login('andres.saldana.aguilar@gmail.com', 'Keane000110')
-        mserver.sendmail('andres.saldana.aguilar@gmail.com', 'pollyketpo@gmail.com', self.msg.as_string())
+        mserver.login('example@gmail.com', '')
+        mserver.sendmail('example@gmail.com', 'destination@gmail.com', self.msg.as_string())
         mserver.quit()
