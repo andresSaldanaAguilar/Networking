@@ -4,31 +4,49 @@ import json
 from monitor import monitor
 import threading
 import datetime
+from getSNMP import *
+import time
 
 class RouterManager():
 
     def __init__(self):
         #diccionario para routers
-        self.data = {}
-        #extrayndo base de datos de routers
+        self.routers = {}
+        #diccionario para computadoras
+        self.agents = {}
+        #extrayendo base de datos de routers
         if os.path.exists('routers.json') and os.path.getsize('routers.json') > 0:
             with open('routers.json', 'r') as f:
-                self.data = json.load(f)
+                self.routers = json.load(f)
+        #extrayendo base de datos de agentes
+        if os.path.exists('agents.json') and os.path.getsize('agents.json') > 0:
+            with open('agents.json', 'r') as f:
+                self.agents = json.load(f)
 
     def monitorear(self):
 
         #semaforo para el control de acceso a recursos compartidos
         sem = threading.Semaphore()
         #hilo que monitorea los archivos de configuracion
-        mon = monitor(sem,self.data)
+        mon = monitor(sem,self.routers)
         mon.start()
 
         #menu del programa
         while True:
 
             print('\nRouters dados de alta:\n')
-            for ip in self.data:
+            for ip in self.routers:
                 print('\t'+ip)
+
+            print('\nAgentes dados de alta:\n')
+            for agent in self.agents:
+                print('\tAgente: '+agent)
+                print('\tComunidad: '+self.agents[agent]['community'])
+                print('\tComunidad: '+self.agents[agent]['port'])
+                print('\tDescripción: '+request(self.agents[agent]['community'],agent,'1.3.6.1.2.1.1.1.0',self.agents[agent]['port']))
+
+            #trae la informacion snmp de un agente
+            infoAgents(self)
 
             print('\nSeleccionar una opcion:\n\n\t1.-Extraer configuracion de router\n\t2.-Enviar configuracion (Desde Router)\n\t3.-Enviar configuracion (Desde PC)\n\t4.-Borrar una versión\n\t5.-Borrar versiones desde una fecha\n\t6.-Restaurar config de router')
             option = input()
@@ -95,7 +113,7 @@ class RouterManager():
 
             #eliminar una configuracion
             elif option == '4':
-                for ip in self.data:
+                for ip in self.routers:
                     print('\t'+ip)
                 print('Ingresar direccion del router:')
                 ip = input()
@@ -109,7 +127,7 @@ class RouterManager():
 
             #eliminar de una fecha en adelante configuraciones
             elif option == '5':
-                for ip in self.data:
+                for ip in self.routers:
                     print('\t'+ip)
                 print('Ingresar direccion del router:')
                 ip = input()
@@ -162,6 +180,18 @@ def firstConf(ip):
             firstdate = item
     print(firstdate)
     return firstdate;
+
+def infoAgents(self):
+    try:
+        os.mkdir('agents')
+    except OSError:
+        pass
+    for agent in self.agents:
+        f = open('agents/'+agent+'_'+time.strftime('%H-%M-%S'), 'a')
+        f.write(request(self.agents[agent]['community'],agent,'1.3.6.1.2.1.1.1.0',self.agents[agent]['port']))
+        f.close()
+
+
 
 rm = RouterManager()
 rm.monitorear()

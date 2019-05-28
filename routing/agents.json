@@ -1,0 +1,7 @@
+{
+    "10.1.0.1": {
+        "community": "comunidadSNMP",
+        "port": "161",
+        "version": "1"
+    }
+}
